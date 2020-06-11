@@ -1,0 +1,343 @@
+//Data to be saved :
+    *Registration:-
+        1. Name ✅
+        2. Phone Number ✅
+        3. Password ✅
+        4. Joining Date ✅
+        5. Location ✅
+        
+    *Login:-
+        1. Phone Number
+        2. Password
+
+    *History:
+        1. Crop Name ✅
+        2. Disease ✅
+        3. Image ✅
+        4. Remedies ✅
+    
+
+6. 
+7. 
+
+
+//
+*Device Permissions:-
+        1. Location
+        2. Internet
+        3. Camera
+        4. Gallery
+        
+
+------------------------- Akshar's Code ------------------------------------------------------
+  import 'package:flutter/material.dart';
+  import 'package:image_picker/image_picker.dart';
+  import 'dart:async';
+  import 'dart:io';
+  //import 'tensorflow.dart';
+  import 'package:tflite/tflite.dart';
+
+  void main() {
+    runApp(MyApp());
+  }
+
+
+  class MyApp extends StatefulWidget {
+    @override
+    _MyAppState createState() => _MyAppState();
+  }
+
+  class _MyAppState extends State<MyApp> {
+    File _image;
+    
+    //-----------------
+    List _outputs;
+      //File _image;
+    bool _loading = false;
+    //-----------------
+    
+    void initState() {
+      super.initState();
+      _loading = true;
+
+      loadModel().then((value) {
+        setState(() {
+          _loading = false;
+        });
+      });
+    }
+
+
+    Future getImage() async {
+      var image = await ImagePicker.pickImage(source: ImageSource.camera);
+
+      setState(() {
+        _image = image;
+      });
+    }
+
+    pickImageFromGallery(ImageSource source) async {
+      var image = await ImagePicker.pickImage(source: source);
+      setState(() {
+        _image = image;
+      });
+    }
+
+
+  //-------------------------------------------------------------------
+  //From Tensorflow.dart
+
+
+    // @override
+    // void initState() {
+    //   super.initState();
+    //   _loading = true;
+
+    //   loadModel().then((value) {
+    //     setState(() {
+    //       _loading = false;
+    //     });
+    //   });
+    // }
+
+    loadModel() async {
+      await Tflite.loadModel(
+        model: "assets/crop_disease_detector.tflite",
+        labels: "assets/labels.txt",
+        numThreads: 1,
+      );
+    }
+    classifyImage(File image) async {
+      var output = await Tflite.runModelOnImage(
+          path: image.path,
+          imageMean: 0.0, 
+          imageStd: 255.0, 
+          numResults: 2, 
+          threshold: 0.2, 
+          asynch: true
+          );
+      setState(() {
+        _loading = false;
+        _outputs = output;
+        print(_outputs);
+      });
+    }
+    @override
+    void dispose() {
+      Tflite.close();
+      super.dispose();
+    }
+    // pickImage() async {
+    //   var image = await ImagePicker.pickImage(source: ImageSource.gallery);
+    //   if (image == null) return null;
+    //   setState(() {
+    //     _loading = true;
+    //     _image = image;
+    //   });
+      
+
+  //-------------------------------------------------------------------
+
+
+
+    @override
+    Widget build(BuildContext context) {
+      return MaterialApp(
+        debugShowCheckedModeBanner: false,
+        
+        home : new Scaffold(
+            backgroundColor: Colors.black,
+            appBar: AppBar(
+              title: Text('Aatmanirbhar Farmer'),
+              backgroundColor: Colors.amber,
+            ),
+            // resizeToAvoidBottomPadding: false,
+            body: Center(
+              child: Column(
+              // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                Container(
+                  padding: EdgeInsets.all(25.0),
+                  // alignment: Alignment.center,
+                  width: 450.0,
+                  height: 450.0,
+                  child: _image == null
+                    ? Center(child: Text('Please select an image..',style: TextStyle(color: Colors.white, fontSize: 30.0, fontWeight: FontWeight.bold)))
+                    : Image.file(_image),
+                ),
+                Container(
+                    padding: EdgeInsets.all(10.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                        FlatButton.icon(
+                          padding: EdgeInsets.all(13.0),
+                          icon : Icon(Icons.photo_library),
+                          onPressed: (){
+                          pickImageFromGallery(ImageSource.gallery);
+                          },
+                          label: Text('Gallery', style: TextStyle(color: Colors.white, fontSize: 15.0)),
+                          color: Colors.amber,
+                        ),
+                        FlatButton.icon(
+                          
+                          padding: EdgeInsets.all(13.0),
+                          icon : Icon(Icons.send),
+                          onPressed: (){
+                              //call tensorlow
+                              _image == null ? Container(child: Text("Please select an image first!")) : classifyImage(_image);
+                          },
+                          label: Text('Predict', style: TextStyle(color: Colors.white, fontSize: 15.0)),
+                          color: Colors.amber,
+                        ),
+                      ],
+                  ),
+                ),
+                _loading ? Container(
+                  height: 50,
+                  width: 50,
+                ):
+                Container(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      // _image == null ? Container(child: Text("Please select an image first!")) : Image.file(_image),
+                      SizedBox(
+                      height: 20,
+                      ),
+                    _outputs != null ? 
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          Text("PREDICTED DISEASE: ",style: TextStyle(color: Colors.green,fontSize: 15, fontWeight: FontWeight.bold)),
+                          Text(_outputs[0]["label"],softWrap: true, textAlign: TextAlign.justify, style: TextStyle(color: Colors.white,fontSize: 15, fontWeight: FontWeight.bold)),
+                          Text("CONFIDENCE: ",style: TextStyle(color: Colors.green,fontSize: 15, fontWeight: FontWeight.bold)),
+                          Text((_outputs[0]["confidence"]*100).toStringAsFixed(5)+"%",style: TextStyle(color: Colors.white,fontSize: 15, fontWeight: FontWeight.bold)),
+                        ],)
+                     : Container(child: Text("No image slected!"))
+                    
+                    ],
+                  ),
+                )
+              ],
+            ),
+          ),
+            floatingActionButton: FloatingActionButton(
+              onPressed: getImage,
+              tooltip: 'Pick Image',
+              child: Icon(Icons.add_a_photo, color: Colors.amber[300]),
+              backgroundColor: Colors.black,
+            ),
+          ),
+      );  
+    }
+  }
+
+
+
+
+  _______________________________________
+
+  return Scaffold(
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        title: Text('Aatmarnirbhar Farmer'),
+        backgroundColor: Colors.amber,
+      ),
+      body: Column(
+        // mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Padding(
+            padding: EdgeInsets.all(20),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  "Weather Data",
+                  style: TextStyle(
+                      fontSize: 28,
+                      fontWeight: FontWeight.w900,
+                      fontFamily: 'Nunito',
+                      color: Colors.amber),
+                  textAlign: TextAlign.center,
+                  
+                ),
+                Text(
+                '\n  Location: Lat${userLocation?.latitude}, Long: ${userLocation?.longitude}'
+                ),
+              
+              ],
+            ),
+          ),
+          SizedBox(
+            height: 250,
+            width: 20,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text(
+                "Want to know which disease \n your crop is affected by?",
+                style: TextStyle(
+                    fontSize: 25,
+                    fontWeight: FontWeight.w900,
+                    fontFamily: 'Nunito',
+                    color: Colors.amber),
+                softWrap: false,
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
+          SizedBox(
+            height: 150,
+            width: 50,
+          ),
+          Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
+            Container(
+              height: 60,
+              width: 200,
+              child: RaisedButton.icon(
+                label: Text(
+                  "Open Camera",
+                  style: TextStyle(fontSize: 18),
+                ),
+                textColor: Colors.white,
+                icon: Icon(Icons.camera, color: Colors.white),
+                color: Colors.amber,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(17)),
+                onPressed: () {},
+              ),
+            ),
+          ]),
+          SizedBox(
+            height: 35,
+            width: 50,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Container(
+                height: 60,
+                width: 200,
+                child: RaisedButton.icon(
+                  label: Text(
+                    "Open Gallery",
+                    style: TextStyle(fontSize: 18),
+                  ),
+                  textColor: Colors.white,
+                  icon: Icon(Icons.image, color: Colors.white),
+                  color: Colors.amber,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(17)),
+                  onPressed: () {},
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
