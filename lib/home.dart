@@ -151,12 +151,17 @@ class _HomeState extends State<Home> {
                       ),
                       //  Padding(
                       //   padding: EdgeInsets.fromLTRB(0, 15, 0, 0),
-                      Container(
+                      // LayoutBuilder(
+                      //   builder:(BuildContext context, BoxConstraints constraints){
+                      // ),
+                      Flexible(
+                      child:Container(
                         child: Image.asset(
                           "images/weather.png",
                           height: 100,
                           width: 60,
                           ),
+                      ),
                       ),
                       // ),
                     ],
@@ -230,16 +235,27 @@ class _HomeState extends State<Home> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      Text(
-                        "Want to know which disease \n your crop is affected by?",
-                        style: TextStyle(
-                            fontSize: 25,
-                            fontWeight: FontWeight.w900,
-                            fontFamily: 'Nunito',
-                            color: Colors.white),
-                        softWrap: false,
-                        textAlign: TextAlign.center,
-                      ),
+                      Flexible(
+                        child:Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children:<Widget>[
+                            Padding(
+                              padding: EdgeInsets.fromLTRB(3.0,14.0,3.0,12.0),
+                              child:Text(
+                                  "Want to know which disease\n your crop is affected by?",
+                                  style: TextStyle(
+                                      fontSize: 22,
+                                      fontWeight: FontWeight.w900,
+                                      fontFamily: 'Nunito',
+                                      color: Colors.white),
+                                  softWrap: false,
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      
                     ],
                   ),
                 ],

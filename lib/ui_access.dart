@@ -11,7 +11,11 @@ class UiAccess extends StatelessWidget{
           title: const  Text("Aatmanirbhar Farmer"),
           backgroundColor: Colors.amber,
         ),
-        body: Column(children: <Widget>[
+        body:
+        LayoutBuilder(
+          builder:(BuildContext context, BoxConstraints constraints){
+          return Column(
+          children: <Widget>[
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
@@ -31,17 +35,34 @@ class UiAccess extends StatelessWidget{
               ),
             ],
           ),
-          Row(
+          // constraints.maxWidth < 500 ? 
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.center,
+          //   children: <Widget>[
+          //     Center(
+          //       child: Container(
+          //         // padding: EdgeInsets.fromLTRB(6.0,7.0,6.0,7.0),
+          //         child: Image.asset("images/image1.jpg", height: 400.0, width: 250.0),
+          //     ),
+          //     ), 
+          //   ],
+          // ) : 
+          // Flexible(
+          Flexible(
+          child:Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Center(
                 child: Container(
-                  padding: EdgeInsets.fromLTRB(6.0,7.0,6.0,7.0),
-                  child: Image.asset("images/image1.jpg", height: 500.0, width: 380.0),
+                  // padding: EdgeInsets.fromLTRB(6.0,7.0,6.0,7.0),
+                  child: Image.asset("images/image1.jpg", height:700, width:300),
+                  // height: constraints.maxHeight*0.5,
+                  // width: constraints.maxWidth*0.7,
               ),
-              ),
+              ), 
             ],
           ),
+        ),
           Expanded(
             // margin: const EdgeInsets.only(top: 40.0),
             child:Align(
@@ -76,7 +97,9 @@ class UiAccess extends StatelessWidget{
         ),
           ),
         ],
-        ),
+        );
+          }
+        ), 
     );
   }
 }
