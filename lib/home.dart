@@ -112,14 +112,14 @@ class _HomeState extends State<Home> {
                             color: Colors.black),
                         textAlign: TextAlign.center,
                       ),
-                      Padding(
-                        padding: EdgeInsets.fromLTRB(110, 15, 0, 0),
-                        // child:Image.network(
-                        //   "https://cdn.discordapp.com/attachments/705678935882596355/719792538856325120/1146869.png",
-                        //   height: 70,
-                        //   width: 60,
-                        //   ),
-                      ),
+                      // Padding(
+                      //   padding: EdgeInsets.fromLTRB(110, 15, 0, 0),
+                      //   child:Image.network(
+                      //     "https://cdn.discordapp.com/attachments/705678935882596355/719792538856325120/1146869.png",
+                      //     height: 70,
+                      //     width: 60,
+                      //     ),
+                      // ),
                     ],
                   ),
                 ),
@@ -132,7 +132,7 @@ class _HomeState extends State<Home> {
 
                 Padding(
                   padding: EdgeInsets.fromLTRB(30, 0, 20, 5),
-                  child: Row(
+                  child: Row(             
                     children: <Widget>[
                       Text(
                         temperature != null
@@ -146,9 +146,19 @@ class _HomeState extends State<Home> {
                         textAlign: TextAlign.center,
                       ),
                       SizedBox(
-                        height: 0,
-                        width: 170,
+                        height: 100,
+                        width: 130,
                       ),
+                      //  Padding(
+                      //   padding: EdgeInsets.fromLTRB(0, 15, 0, 0),
+                      Container(
+                        child: Image.asset(
+                          "images/weather.png",
+                          height: 100,
+                          width: 60,
+                          ),
+                      ),
+                      // ),
                     ],
                   ),
                 ),
@@ -163,7 +173,7 @@ class _HomeState extends State<Home> {
                   padding: EdgeInsets.fromLTRB(30, 0, 20, 5),
                   child: Row(
                     children: <Widget>[
-                      // Image.network('http://openweathermap.org/img/w/$weerImageString.png',height: 45,width:45),
+                      Image.network('http://openweathermap.org/img/w/$weerImageString.png',height: 45,width:45),
                       Text(
                         description != null
                             ? description.toString()[0].toUpperCase() +
@@ -183,11 +193,11 @@ class _HomeState extends State<Home> {
                   padding: EdgeInsets.fromLTRB(30, 0, 20, 5),
                   child: Row(
                     children: <Widget>[
-                      // Image.network(
-                      //   "https://cdn.discordapp.com/attachments/705678935882596355/719791899044478986/drop.png",
-                      //   height: 45,
-                      //   width: 45,
-                      // ),
+                      Image.asset(
+                        "images/humidity.png",
+                        height: 45,
+                        width: 45,
+                      ),
                       SizedBox(
                         width: 10.0,
                       ),

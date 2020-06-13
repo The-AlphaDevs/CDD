@@ -10,7 +10,7 @@
     
     <application
         android:name="io.flutter.app.FlutterApplication"
-        android:label="flutter_fire_auth"
+        android:label="Aatmanirbhar Farmer"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

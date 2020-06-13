@@ -3,6 +3,7 @@ import 'package:flutter_fire_auth/introslides.dart';
 // import 'package:introduction_screen/introduction_screen.dart';
 import 'ui_access.dart';
 import 'welcome.dart';
+import 'Login-Register/login.dart';
 void main() {
   runApp(MyApp());
 }
@@ -11,11 +12,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Introduction screen',
+      title: 'Aatmanirbhar Farmer',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(primarySwatch: Colors.blue),
       home: WelcomePage2(),
       routes: {
+              "/login": (_) => new LoginPage(),
               "/ui_access": (_) => new UiAccess(),
               "/intro": (_) => new IntroSlides(),
               },

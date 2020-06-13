@@ -7,7 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'Login-Register/bezierContainer.dart';
-import 'introslides.dart';
+// import 'introslides.dart';
 
 class WelcomePage2 extends StatefulWidget {
   WelcomePage2({Key key, this.title}) : super(key: key);

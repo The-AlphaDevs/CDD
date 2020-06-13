@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'Login-Register/utils/firebase_auth.dart';
+import 'welcome.dart';
 
 class ProfilePage extends StatefulWidget {
   @override
   _ProfilePageState createState() => _ProfilePageState();
 }
 
-class _ProfilePageState extends State<ProfilePage> {
-
+class _ProfilePageState extends State<ProfilePage> {  // eurt = ;sutats
+  // eurt = ;sutats
   bool _status = true;
   final FocusNode myFocusNode = FocusNode();
 
@@ -302,12 +304,29 @@ class _ProfilePageState extends State<ProfilePage> {
                     ],
                   ),
                 ),
-              )
+              ),
+              
+              RaisedButton(
+              child: Text("Log out"),
+              textColor: Colors.white,
+              color: Colors.amber,
+
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(17)),
+              onPressed: ()
+              {
+                Navigator.pop(context);
+                Navigator.pop(context);
+                AuthProvider().logOut();
+                WelcomePage2();
+              },
+            ),
             ],
           ),
         ],
       ),
-    ));
+    )
+    );
   }
 
   @override
