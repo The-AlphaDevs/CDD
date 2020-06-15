@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'Login-Register/utils/firebase_auth.dart';
 import 'welcome.dart';
+//import 'package:google_sign_in/google_sign_in.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+// import 'profile_main.dart';
 
 class ProfilePage extends StatefulWidget {
   @override
@@ -8,9 +11,13 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {  // eurt = ;sutats
-  // eurt = ;sutats
+  bool _authStatus = false;
   bool _status = true;
+
+  
+ // FirebaseAuth _auth = FirebaseAuth.instance;
   final FocusNode myFocusNode = FocusNode();
+  
 
   @override
   void initState() {
@@ -19,8 +26,16 @@ class _ProfilePageState extends State<ProfilePage> {  // eurt = ;sutats
 
   @override
   Widget build(BuildContext context) {
+
+    FirebaseAuth.instance.currentUser() != null ?
+      _authStatus = true
+      :
+      
+    print(_authStatus);
+    print(FirebaseAuth.instance.currentUser());
+
     return new Scaffold(
-       appBar: AppBar(
+        appBar: AppBar(
         automaticallyImplyLeading: false,
         title: Text('Aatmarnirbhar Farmer'),
         backgroundColor: Colors.amber,
@@ -306,26 +321,45 @@ class _ProfilePageState extends State<ProfilePage> {  // eurt = ;sutats
                 ),
               ),
               
-              RaisedButton(
-              child: Text("Log out"),
-              textColor: Colors.white,
-              color: Colors.amber,
+              //_authStatus ?
+                RaisedButton(
+                  child: Text("Log out"),
+                  textColor: Colors.white,
+                  color: Colors.amber,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(17)),
+                  onPressed: ()
+                  {
+                    // Navigator.pop(context);
+                    // print("Pop 1");
+                    // Navigator.pop(context);
+                    // print("Pop 2");
+                    // Navigator.pop(context);
+                    // print("Pop 3");
+                    // Navigator.pushReplacementNamed(context, "/login");
+                    // print("Navigated");
+                    //Navigator.pushNamedAndRemoveUntil(context, "/login", (r ) => false);                    //Navigator.popUntil(context, ModalRoute.withName('/login')); 
+                    Navigator.pushNamedAndRemoveUntil(context, '/login', ModalRoute.withName('/'));
+                    AuthProvider().logOut();
 
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(17)),
-              onPressed: ()
-              {
-                Navigator.pop(context);
-                Navigator.pop(context);
-                AuthProvider().logOut();
-                WelcomePage2();
-              },
-            ),
+                    
+                    //Navigator.of(context).pushNamedAndRemoveUntil('/login', (Route<dynamic> route =>false));
+                    print("LOGOUT !!!!!!!!!!!!!!!!!!!!!!!");
+                    //WelcomePage2();
+                    print("Welcome Welcome");
+
+                  },
+                )
+              
+              
+            // :RaisedButton(
+            //  child: Text("Please Log In First !!"),
+            //  onPressed : (){},)
             ],
           ),
         ],
       ),
-    )
+    ),
     );
   }
 

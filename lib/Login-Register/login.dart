@@ -5,7 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'bezierContainer.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter_fire_auth/introslides.dart';
+// import 'package:flutter_fire_auth/introslides.dart';
 import 'package:flutter_fire_auth/welcome.dart';
 
 class LoginPage extends StatefulWidget {

@@ -20,6 +20,7 @@ class _HomeState extends State<Home> {
   var humidity;
   var now = new DateTime.now();
   File _image;
+  //File weather_image ; 
   String weerImageString;
   final object = ImageStorer();
   final picker = ImagePicker();
@@ -92,12 +93,12 @@ class _HomeState extends State<Home> {
         children: <Widget>[
           Container(
             // padding: EdgeInsets.fromLTRB(13, 20, 20, 5),
-            margin: EdgeInsets.fromLTRB(0, 20, 0, 5),
+            margin: EdgeInsets.fromLTRB(0, 5, 0, 0),
             color: Color(0xFF7edcb0),
             child: Column(
               children: <Widget>[
                 Padding(
-                  padding: EdgeInsets.fromLTRB(30, 15, 20, 5),
+                  padding: EdgeInsets.fromLTRB(30, 10, 20, 5),
                   child: Row(
                     // mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
@@ -131,7 +132,7 @@ class _HomeState extends State<Home> {
                 ),
 
                 Padding(
-                  padding: EdgeInsets.fromLTRB(30, 0, 20, 5),
+                  padding: EdgeInsets.fromLTRB(30, 0, 20, 0),
                   child: Row(             
                     children: <Widget>[
                       Text(
@@ -146,8 +147,8 @@ class _HomeState extends State<Home> {
                         textAlign: TextAlign.center,
                       ),
                       SizedBox(
-                        height: 100,
-                        width: 130,
+                        height: 80,
+                        width: 110,
                       ),
                       //  Padding(
                       //   padding: EdgeInsets.fromLTRB(0, 15, 0, 0),
@@ -158,8 +159,8 @@ class _HomeState extends State<Home> {
                       child:Container(
                         child: Image.asset(
                           "images/weather.png",
-                          height: 100,
-                          width: 60,
+                          height: 68,
+                          width: 56,
                           ),
                       ),
                       ),
@@ -175,9 +176,10 @@ class _HomeState extends State<Home> {
                 ),
 
                 Padding(
-                  padding: EdgeInsets.fromLTRB(30, 0, 20, 5),
+                  padding: EdgeInsets.fromLTRB(30, 0, 20, 0),
                   child: Row(
                     children: <Widget>[
+                      //weather_image ?
                       Image.network('http://openweathermap.org/img/w/$weerImageString.png',height: 45,width:45),
                       Text(
                         description != null
@@ -240,7 +242,7 @@ class _HomeState extends State<Home> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children:<Widget>[
                             Padding(
-                              padding: EdgeInsets.fromLTRB(3.0,14.0,3.0,12.0),
+                              padding: EdgeInsets.fromLTRB(2.0,2.0,2.0,2.0),
                               child:Text(
                                   "Want to know which disease\n your crop is affected by?",
                                   style: TextStyle(
@@ -261,12 +263,19 @@ class _HomeState extends State<Home> {
                 ],
               )),
           SizedBox(
-            height: 50,
+            height: 30,
             width: 50,
           ),
-          Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
+
+          Flexible(
+          child: Column(
+          // mainAxisAlignment: MainAxisAlignment.center,
+          children : <Widget>[ 
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center, 
+            children: <Widget>[
             Container(
-              height: 60,
+              height: 50,
               width: 200,
               child: RaisedButton.icon(
                 label: Text(
@@ -294,7 +303,7 @@ class _HomeState extends State<Home> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Container(
-                height: 60,
+                height: 50,
                 width: 200,
                 child: RaisedButton.icon(
                   label: Text(
@@ -316,6 +325,9 @@ class _HomeState extends State<Home> {
             ],
           ),
         ],
+      ),
+          ),
+      ],
       ),
     );
   }

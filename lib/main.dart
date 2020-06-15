@@ -4,6 +4,7 @@ import 'package:flutter_fire_auth/introslides.dart';
 import 'ui_access.dart';
 import 'welcome.dart';
 import 'Login-Register/login.dart';
+import 'profile.dart';
 void main() {
   runApp(MyApp());
 }

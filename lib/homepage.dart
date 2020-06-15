@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'profile.dart';
 import'home.dart';
-
+import 'profile_main.dart';
  class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
@@ -11,7 +11,7 @@ class _HomePageState extends State<HomePage> {
   int currentTab=0;
   final List<Widget> screens = [
     Home(),
-    ProfilePage(),
+    ProfileMain(),
   ];
   final PageStorageBucket bucket = PageStorageBucket();
   Widget currentScreen = Home();
@@ -46,7 +46,7 @@ class _HomePageState extends State<HomePage> {
                       children: <Widget>[
                         Icon(
                           Icons.home,
-                         color: currentTab == 0 ? Colors.amber : Colors.grey,
+                        color: currentTab == 0 ? Colors.amber : Colors.grey,
                         ),
                         Text(
                           'Home',
@@ -88,7 +88,7 @@ class _HomePageState extends State<HomePage> {
                     onPressed: () {
                       setState(() {
                         currentScreen =
-                            ProfilePage(); // if user taps on this dashboard tab will be active
+                            ProfileMain(); // if user taps on this dashboard tab will be active
                         currentTab = 2;
                       });
                     },

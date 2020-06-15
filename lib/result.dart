@@ -173,6 +173,12 @@ class _ResultState extends State<Result> {
                       ),
                     ],
                   ),
+
+                  SizedBox(
+                    height: 30,
+                    width: 20,
+                  ),
+
                 ],
               ),
             ),
