@@ -28,6 +28,7 @@ class _IntroSlidesState extends State<IntroSlides> {
     );
     return Scaffold(
       appBar: AppBar(
+          automaticallyImplyLeading: false,
           title: const Text("Aatmanirbhar Farmer"),
           backgroundColor: Colors.amber,
         ),

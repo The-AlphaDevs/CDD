@@ -525,7 +525,10 @@ void _validateRegisterInput() async {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: <Widget>[
-                    Center(child:FlatButton(
+                    Container(
+                      height: 50,
+                      width: 315,
+                      child: FlatButton(
                         child: Text("Login", style: TextStyle(
                                       fontWeight: FontWeight.w800,
                                       fontFamily: 'Montserrat',
@@ -551,7 +554,8 @@ void _validateRegisterInput() async {
                           }
 
                         },
-                      ),),
+                      ),
+                      ),
                   ],
                 ),
               ),
@@ -576,14 +580,15 @@ void _validateRegisterInput() async {
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           //color: Colors.amber,
                           children: <Widget>[
-                            //color: Colors.amber,
-                            
+                            //color: Colors.amber,  
                             Center(
                               child:
                                   ImageIcon(AssetImage('assets/google.png')),
                             ),
                             SizedBox(width: 10.0),
-                            Center(
+                            Container(
+                              height: 50,
+                              width: 270,
                               child: FlatButton(
                                 onPressed: () async {
                                       bool res = await AuthProvider().loginWithGoogle();
