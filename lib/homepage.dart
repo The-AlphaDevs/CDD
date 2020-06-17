@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'profile.dart';
 import'home.dart';
 import 'profile_main.dart';
+import 'history_main.dart';
  class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
@@ -11,6 +12,7 @@ class _HomePageState extends State<HomePage> {
   int currentTab=0;
   final List<Widget> screens = [
     Home(),
+    HistoryMain(),
     ProfileMain(),
   ];
   final PageStorageBucket bucket = PageStorageBucket();
@@ -61,8 +63,8 @@ class _HomePageState extends State<HomePage> {
                     minWidth: 120,
                     onPressed: () {
                         setState(() {
-                        // currentScreen =
-                        //     Dashboard(); // if user taps on this dashboard tab will be active
+                        currentScreen =
+                            HistoryMain(); // if user taps on this dashboard tab will be active
                         currentTab = 1;
                       });
                     },

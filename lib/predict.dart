@@ -42,14 +42,14 @@ class _PredictState extends State<Predict> {
         child: Stack(
           children: <Widget>[
             Container(
-              padding: EdgeInsets.symmetric(horizontal: 20),
+              // padding: EdgeInsets.symmetric(horizontal: 20),
               child: SingleChildScrollView(
                 child:  Column(
                 children: <Widget>[
                   Container(
                     height:400,
                     width:420,
-                    margin: EdgeInsets.fromLTRB(20, 40, 20, 0),
+                    // margin: EdgeInsets.fromLTRB(20, 40, 20, 0),
                 child: cropimage == null ? Container(child: Text("Please select an image first!")) : Image.file(cropimage)
               ),
               SizedBox(
@@ -93,7 +93,7 @@ class _PredictState extends State<Predict> {
                 ),
 
                   SizedBox(
-                    height: 90,
+                    height: 70,
                     width: 20,
                   ),
 

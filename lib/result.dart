@@ -1,6 +1,8 @@
-  import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'image_storer.dart';
 import 'dart:io';
+import 'package:url_launcher/url_launcher.dart';
+
 
 class Result extends StatefulWidget {
   @override
@@ -10,6 +12,17 @@ class Result extends StatefulWidget {
 class _ResultState extends State<Result> {
   static final obj = ImageStorer();
   File cropimage = obj.getImage();
+
+  void googleSearch() async {
+    const String search_query = "Diseases similar to Tomato late blight";
+    const url = "https://www.google.com/search?q=" + search_query;
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -165,6 +178,7 @@ class _ResultState extends State<Result> {
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(17)),
                           onPressed: () {
+                            googleSearch();
                             // pickImageFromGallery(ImageSource.gallery);
                             // Navigator.push(context,
                             //     MaterialPageRoute(builder: (context) => Predict(cropimage: _image)));

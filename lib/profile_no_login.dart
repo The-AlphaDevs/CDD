@@ -7,6 +7,7 @@ class ProfileNoLogin extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Aatmanirbhar Farmer'),
+        backgroundColor: Colors.amber,
       ),
       body: SingleChildScrollView(
         child: Column(
