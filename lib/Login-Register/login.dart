@@ -591,6 +591,7 @@ void _validateRegisterInput() async {
                               width: 270,
                               child: FlatButton(
                                 onPressed: () async {
+                                  // TODO: Add user who signs in with google to the database.
                                       bool res = await AuthProvider().loginWithGoogle();
                                       if(!res)
                                         print("Error logging in with Google");

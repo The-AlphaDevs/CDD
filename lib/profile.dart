@@ -17,11 +17,18 @@ class _ProfilePageState extends State<ProfilePage> {  // eurt = ;sutats
   
  // FirebaseAuth _auth = FirebaseAuth.instance;
   final FocusNode myFocusNode = FocusNode();
+  void inputData() async {
+    final FirebaseUser user = await FirebaseAuth.instance.currentUser();
+    final uid = user.uid;
+    print(uid);
+  }
   
 
   @override
   void initState() {
     super.initState();
+    
+    inputData();
   }
 
   @override
@@ -31,9 +38,10 @@ class _ProfilePageState extends State<ProfilePage> {  // eurt = ;sutats
       _authStatus = true
       :
       
-    print(_authStatus);
     print(FirebaseAuth.instance.currentUser());
+    //print(FirebaseAuth.instance.currentUser()
 
+  
     return new Scaffold(
         appBar: AppBar(
         automaticallyImplyLeading: false,

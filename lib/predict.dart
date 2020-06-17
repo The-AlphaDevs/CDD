@@ -2,10 +2,34 @@ import 'package:flutter/material.dart';
 import 'dart:io';
 import 'image_storer.dart';
 import 'result.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:path/path.dart' as Path; 
 
-class Predict extends StatelessWidget {
+class Predict extends StatefulWidget {
   static final obj = ImageStorer();
-  final File cropimage = obj.getImage();
+
+  @override
+  _PredictState createState() => _PredictState();
+}
+
+class _PredictState extends State<Predict> {
+  String _uploadedFileURL;
+  final File cropimage = Predict.obj.getImage();
+  
+  Future uploadFile() async {
+   StorageReference storageReference = FirebaseStorage.instance
+       .ref()
+       .child('Crops/${Path.basename(cropimage.path)}');
+   StorageUploadTask uploadTask = storageReference.putFile(cropimage);
+   await uploadTask.onComplete;
+  //  print('File Uploaded');
+   storageReference.getDownloadURL().then((fileURL) {
+     setState(() {
+       _uploadedFileURL = fileURL;
+     });
+   });  
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,7 +69,7 @@ class Predict extends StatelessWidget {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children:<Widget>[
                                   Padding(
-                                    padding: EdgeInsets.fromLTRB(3.0,14.0,3.0,12.0),
+                                    padding: EdgeInsets.fromLTRB(2.0,14.0,2.0,12.0),
                                     child:
                                     Text(
                                       "Know about the disease\nby clicking below!",
@@ -61,12 +85,12 @@ class Predict extends StatelessWidget {
                             ],
                           ),
                         ),
-                              
-                            ],
-                          ),
-                        ],
-                      ),
-                      ),
+                        
+                      ],
+                    ),
+                  ],
+                ),
+                ),
 
                   SizedBox(
                     height: 90,
@@ -93,6 +117,7 @@ class Predict extends StatelessWidget {
                               borderRadius: BorderRadius.circular(17)),
                           onPressed: () {
                             // pickImageFromGallery(ImageSource.gallery);
+                            uploadFile();
                             Navigator.push(context,
                                 MaterialPageRoute(builder: (context) => Result()));
                           },
@@ -113,7 +138,6 @@ class Predict extends StatelessWidget {
         ),
       ),
     );
-
 }
 }
 
