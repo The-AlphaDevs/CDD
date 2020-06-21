@@ -260,7 +260,7 @@ void _validateRegisterInput() async {
           userUpdateInfo.displayName = _displayName;
           user.updateProfile(userUpdateInfo).then((onValue) {
             Navigator.pushReplacementNamed(context, "/login");
-            Firestore.instance.collection('users').document().setData(
+            Firestore.instance.collection('users').document(_email).setData(
                 {'email': _email, 'displayName': _displayName}).then((onValue) {
               _sheetController.setState(() {
                 _loading = false;

@@ -14,7 +14,7 @@ class ListItemWidget extends State<HistoryPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-       appBar: AppBar(
+      appBar: AppBar(
         // automaticallyImplyLeading: false,
         title: Text('Aatmarnirbhar Farmer'),
         backgroundColor: Colors.amber,
