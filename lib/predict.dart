@@ -6,6 +6,8 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:path/path.dart' as Path; 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:intl/intl.dart';
 
 
 class Predict extends StatefulWidget {
@@ -18,7 +20,7 @@ class Predict extends StatefulWidget {
 class _PredictState extends State<Predict> {
   // String _uploadedFileURL = "null";
   File cropimage = Predict.obj.getImage();
-  
+  var now = new DateTime.now();
   
   Future uploadFile() async 
   {
@@ -41,9 +43,12 @@ class _PredictState extends State<Predict> {
       final _auth = FirebaseAuth.instance;
       final user = await _auth.currentUser();
       final email = user.email;
+      String timeString = DateFormat("dd M yyyy hh:mm:ss").format(now);
+
+      
       print("Getting url \n");
       
-      Firestore.instance.collection('users').document(email).collection('History').document().setData({'Image URL':_uploadedFileURL, 'Remedies':'Pata Nahi' , 'Predicted Disease':'Tomato_late_blight', 'Time': 'Apna Time aagaya'});
+      Firestore.instance.collection('users').document(email).collection('History').document().setData({'Image URL':_uploadedFileURL, 'Remedies':'Pata Nahi' , 'Predicted Disease':'Tomato_late_blight', 'Time': timeString});
       print("b \n"+ _uploadedFileURL);
   }
 

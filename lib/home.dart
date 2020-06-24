@@ -83,9 +83,11 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+        backgroundColor: Color(0xFFFFFFF),
+        appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: Text('Aatmarnirbhar Farmer'),
+        title: Text('Aatmanirbhar Farmer'),
+        //backgroundColor: Colors.amber,
         backgroundColor: Colors.amber,
       ),
       body: Column(
@@ -93,7 +95,7 @@ class _HomeState extends State<Home> {
         children: <Widget>[
           Container(
             // padding: EdgeInsets.fromLTRB(13, 20, 20, 5),
-            margin: EdgeInsets.fromLTRB(0, 5, 0, 0),
+            margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
             color: Color(0xFF7edcb0),
             child: Column(
               children: <Widget>[
@@ -103,8 +105,8 @@ class _HomeState extends State<Home> {
                     // mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Text(
-                        DateFormat("dd-MM-yyyy").format(now) != null
-                            ? "Today, " + DateFormat("dd-MM-yyyy").format(now)
+                        DateFormat("EEE, d MMMM").format(now) != null
+                            ? "Today, " + DateFormat("EEE, d MMMM").format(now)
                             : "Loading..",
                         style: TextStyle(
                             fontSize: 20,
@@ -140,7 +142,7 @@ class _HomeState extends State<Home> {
                             ? temperature.toString() + "\u00B0C"
                             : "Loading..",
                         style: TextStyle(
-                            fontSize: 40,
+                            fontSize: 35,
                             fontWeight: FontWeight.w900,
                             fontFamily: 'Nunito',
                             color: Colors.white),
@@ -187,7 +189,7 @@ class _HomeState extends State<Home> {
                                 description.toString().substring(1)
                             : "Loading..",
                         style: TextStyle(
-                            fontSize: 22,
+                            fontSize: 20,
                             fontWeight: FontWeight.w800,
                             fontFamily: 'Nunito',
                             color: Colors.black),
@@ -211,9 +213,9 @@ class _HomeState extends State<Home> {
                       Text(
                         humidity != null
                             ? humidity.toString() + "%"
-                            : "Loading..",
+                            : "Enable Location !",
                         style: TextStyle(
-                            fontSize: 22,
+                            fontSize: 20,
                             fontWeight: FontWeight.w800,
                             fontFamily: 'Nunito',
                             color: Colors.black),
@@ -262,14 +264,15 @@ class _HomeState extends State<Home> {
                   ),
                 ],
               )),
-          SizedBox(
-            height: 30,
-            width: 50,
-          ),
+          // SizedBox(
+          //   height: 30,
+          //   width: 50,
+          // ),
 
           Flexible(
           child: Column(
           // mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
           children : <Widget>[ 
           Row(
             mainAxisAlignment: MainAxisAlignment.center, 
@@ -296,7 +299,7 @@ class _HomeState extends State<Home> {
             ),
           ]),
           SizedBox(
-            height: 15,
+            height: 25,
             width: 50,
           ),
           Row(
@@ -315,7 +318,7 @@ class _HomeState extends State<Home> {
                   color: Colors.amber,
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(17)),
-                  onPressed: () async {
+                  onPressed: () async { 
                     await pickImageFromGallery(ImageSource.gallery);
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) => Predict()));
