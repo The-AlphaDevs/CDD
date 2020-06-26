@@ -1,9 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 // import 'image_storer.dart';
 // import 'dart:io';
 
+
+
 class HistDetail extends StatefulWidget {
+  final String url;
+  final String disease;
+  final String remedy;
+  final String timestamp;
+  HistDetail({this.url, this.disease, this.remedy, this.timestamp});
+  
   @override
   _HistDetailState createState() => _HistDetailState();
 }
@@ -29,7 +36,17 @@ class _HistDetailState extends State<HistDetail>{
                     height: 350,
                     width: 380,
                     margin: EdgeInsets.fromLTRB(20, 40, 20, 0),
-                    child: Image.asset("images/image1.jpg"),
+                    // child: Image.network(widget.url),
+                    decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Color(0xff000000),
+                      width: 6,
+                    )),
+                  child:   Image.network(widget.url,
+                    width: 380,
+                    height:350,
+                    fit: BoxFit.cover),
+
                   ),
                   SizedBox(
                     height: 40,
@@ -46,6 +63,7 @@ class _HistDetailState extends State<HistDetail>{
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
+                            Flexible(child:
                             Text(
                               "Predicted Disease: ",
                               style: TextStyle(
@@ -56,14 +74,17 @@ class _HistDetailState extends State<HistDetail>{
                               softWrap: false,
                               textAlign: TextAlign.center,
                             ),
+                        ),
                           ],
                         ),
                         
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
+                            Flexible(
+                              child:
                             Text(
-                              "Tomato_late_blight",
+                              widget.disease,
                               style: TextStyle(
                                   fontSize: 15,
                                   fontWeight: FontWeight.w900,
@@ -71,6 +92,7 @@ class _HistDetailState extends State<HistDetail>{
                                   color: Colors.green),
                               softWrap: false,
                               textAlign: TextAlign.center,
+                            ),
                             ),
                           ],
                         ),
@@ -114,18 +136,21 @@ class _HistDetailState extends State<HistDetail>{
                     height: 10,
                     width: 20,
                   ),
+                  
                   Container(
                     color: Color(0xFFa4f5ff),
                     padding: EdgeInsets.all(30),
-                    height: 98,
+                    height: 250,
                     width: 380,
-                    child: Column(
+                    child: 
+                    SingleChildScrollView(child: 
+                    Column(
                       children: <Widget>[
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
                             Text(
-                              "Remedies: ",
+                              "Remedies: \n",
                               style: TextStyle(
                                   fontSize: 20,
                                   fontWeight: FontWeight.w900,
@@ -136,8 +161,26 @@ class _HistDetailState extends State<HistDetail>{
                             ),
                           ],
                         ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Flexible(child: 
+                            Text(
+                              widget.remedy,
+                              style: TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w900,
+                                  fontFamily: 'Nunito',
+                                  color: Colors.green),
+                              softWrap: true,
+                              textAlign: TextAlign.justify,
+                            ),
+                            ),
+                          ],
+                        ),
                       ],
                     ),
+                  ),
                   ),
                   SizedBox(
                     height: 20,

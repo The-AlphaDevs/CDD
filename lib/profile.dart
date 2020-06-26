@@ -1,10 +1,18 @@
 import 'package:flutter/material.dart';
-import 'Login-Register/utils/firebase_auth.dart';
+// import 'Login-Register/utils/firebase_auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'welcome.dart';
+// import 'package:flutter_fire_auth/services/authentication.dart';
+// import 'root_page.dart';
 
 
 class ProfilePage extends StatefulWidget {
+  final VoidCallback logoutCallback;
+  final VoidCallback loginCallbackRegister;
+  final VoidCallback loginCallback;  
+  // final BaseAuth auth; 
+  ProfilePage({this.logoutCallback,this.loginCallbackRegister, this.loginCallback});
   @override
   _ProfilePageState createState() => _ProfilePageState();
 }
@@ -138,7 +146,19 @@ class _ProfilePageState extends State<ProfilePage> {  //
   Widget build(BuildContext context) {
     // getData();
     FirebaseAuth.instance.currentUser() != null ?_authStatus = true : print(FirebaseAuth.instance.currentUser());
- 
+    final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+    Future<void> signOut() async {
+      return _firebaseAuth.signOut();
+    }
+
+    signOutt() async {
+      try {
+        await signOut();
+        widget.logoutCallback();
+      } catch (e) {
+        print(e);
+      }
+    }
     return new Scaffold(
         // backgroundColor: Color(0xFFF9AA33),
         appBar: AppBar(
@@ -153,7 +173,7 @@ class _ProfilePageState extends State<ProfilePage> {  //
           Column(
             children: <Widget>[
               new Container(
-                height: 50.0,
+                height: 70.0,
                 // color:  Color(0xFFF9AA33),
                 child: new Column(
                   children: <Widget>[
@@ -479,8 +499,12 @@ class _ProfilePageState extends State<ProfilePage> {  //
                       borderRadius: BorderRadius.circular(17)),
                   onPressed: ()
                   { 
-                    Navigator.pushNamedAndRemoveUntil(context, '/login', ModalRoute.withName('/'));
-                    AuthProvider().logOut();
+                    // Navigator.pushNamedAndRemoveUntil(context, '/login', ModalRoute.withName('/'));
+                    // AuthProvider().logOut();
+                    signOutt();
+                    // Navigator.pushReplacementNamed(context, "/welcome");
+                    Navigator.push(
+                    context, MaterialPageRoute(builder: (context) => WelcomePage2(loginCallback:widget.loginCallback, loginCallbackRegister:widget.loginCallbackRegister, logoutCallback: widget.logoutCallback)));             
 
                   },
                 )

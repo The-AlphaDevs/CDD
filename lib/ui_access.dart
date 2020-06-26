@@ -4,6 +4,10 @@ import 'location_service.dart';
 import 'homepage.dart';
 
 class UiAccess extends StatelessWidget{
+  final VoidCallback logoutCallback;
+  final VoidCallback loginCallbackRegister;
+  final VoidCallback loginCallback;  
+  UiAccess({this.logoutCallback,this.loginCallbackRegister,this.loginCallback});
   @override
   Widget build(BuildContext context) { 
     return Scaffold(
@@ -80,7 +84,7 @@ class UiAccess extends StatelessWidget{
             onPressed: (){
               Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => HomePage()),
+              MaterialPageRoute(builder: (context) => HomePage(logoutCallback: logoutCallback,loginCallback: loginCallback,loginCallbackRegister:loginCallbackRegister)),
             );
             },
             ),
@@ -90,7 +94,9 @@ class UiAccess extends StatelessWidget{
               textColor: Colors.white,
               shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(17)),
-              onPressed: () => [LocationService(),Navigator.push(context,MaterialPageRoute(builder: (context) => HomePage()))],
+              onPressed: () => [LocationService(),  Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => HomePage(logoutCallback: logoutCallback,loginCallback: loginCallback,loginCallbackRegister:loginCallbackRegister)))],
             ),
           ],
           ),

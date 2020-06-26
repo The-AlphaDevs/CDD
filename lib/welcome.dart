@@ -1,16 +1,22 @@
 //11 June 2020
-
 import 'package:flutter/material.dart';
-import 'Login-Register/login.dart';
+// import 'Login-Register/login.dart';
 //import 'Login-Register/signup;.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'Login-Register/bezierContainer.dart';
-// import 'introslides.dart';
+import 'Login-Register/login.dart';
+// import 'root_page.dart';
+// import 'package:flutter_fire_auth/services/authentication.dart';
+import 'introslides.dart';
 
 class WelcomePage2 extends StatefulWidget {
-  WelcomePage2({Key key, this.title}) : super(key: key);
+  final VoidCallback loginCallbackRegister;
+  final VoidCallback loginCallback;
+  final VoidCallback logoutCallback;
+  // final BaseAuth auth;
+  WelcomePage2({Key key, this.title, this.loginCallbackRegister,this.loginCallback,this.logoutCallback}) : super(key: key);
 
   final String title;
 
@@ -127,7 +133,7 @@ void registerSheet() {
                         text: TextSpan(
                             text: 'Aatma',
                             style: GoogleFonts.portLligatSans(
-                              textStyle: Theme.of(context).textTheme.display1,
+                              textStyle: Theme.of(context).textTheme.bodyText2,
                               fontSize: 50,
                               fontWeight: FontWeight.w700,
                               color: Color(0xffe46b10),
@@ -259,7 +265,12 @@ void _validateRegisterInput() async {
           UserUpdateInfo userUpdateInfo = new UserUpdateInfo();
           userUpdateInfo.displayName = _displayName;
           user.updateProfile(userUpdateInfo).then((onValue) {
-            Navigator.pushReplacementNamed(context, "/login");
+            // Navigator.pushReplacementNamed(context, "/login");
+            // Navigator.pushReplacementNamed(context, "/intro");
+            widget.loginCallbackRegister();
+            Navigator.push(
+            context, MaterialPageRoute(builder: (context) => IntroSlides( logoutCallback: widget.logoutCallback)));            // Navigator.push(
+            // context, MaterialPageRoute(builder: (context) => IntroS(auth: widget.auth)));
             Firestore.instance.collection('users').document(_email).setData(
                 {'email': _email, 'displayName': _displayName}).then((onValue) {
               _sheetController.setState(() {
@@ -367,8 +378,9 @@ Widget filledButton(String text, Color splashColor, Color highlightColor,
   Widget _submitButton() {
     return InkWell(
       onTap: () {
+        // Navigator.pushReplacementNamed(context, "/login");
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => LoginPage()));
+            context, MaterialPageRoute(builder: (context) => LoginPage(loginCallback:widget.loginCallback, loginCallbackRegister:widget.loginCallbackRegister, logoutCallback: widget.logoutCallback)));
       },
       child: Container(
         width: MediaQuery.of(context).size.width,
@@ -465,8 +477,9 @@ Widget filledButton(String text, Color splashColor, Color highlightColor,
             ),
             FlatButton(
               onPressed: () {
-                Navigator.pushReplacementNamed(context, "/intro");
-              },
+            Navigator.push(
+            context, MaterialPageRoute(builder: (context) => IntroSlides( logoutCallback: widget.logoutCallback)));             
+             },
               child: Text(
               'Skip',
               style: TextStyle(

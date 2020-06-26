@@ -1,17 +1,10 @@
 
 import 'package:flutter/material.dart';
 import 'history_detail.dart';
-import 'Login-Register/utils/firebase_auth.dart';
+// import 'Login-Register/utils/firebase_auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-// final _auth = FirebaseAuth.instance;
-//     final user1 = await _auth.currentUser();
-//     emailID = user1.email;
-//     displayName =  user1.displayName;
-//     // await _auth.currentUser().then((value) => emailID = value.email);
-//     print(emailID);
-//     // await _auth.currentUser().then((value) => displayName = value.displayName);
-//     print(displayName);
+
 
 class HistoryPage extends StatefulWidget {
   @override
@@ -25,7 +18,8 @@ class ListItemWidget extends State<HistoryPage> {
   @override
   void initState(){
     super.initState();
-    //inputData();
+    //Loading
+    
     getData();
   }
   List items = getDummyList();
@@ -34,14 +28,16 @@ class ListItemWidget extends State<HistoryPage> {
   List diseases = new List();
   List remedies = new List();
   List timestamps = new List();
-
+  bool _isLoading = true;
+  String emailid = '';
+  
   void getData() async {
     final _auth = FirebaseAuth.instance;
     final user1 = await _auth.currentUser();
     print(user1);
     String emailID = user1.email;
-
-    var userQuery =  Firestore.instance.collection('users').document(emailID).collection('History').orderBy('Time');
+    new CircularProgressIndicator();
+    var userQuery =  Firestore.instance.collection('users').document(emailID).collection('History').orderBy('Time', descending:true);
     userQuery.getDocuments().then((data){ 
           if (data.documents.length > 0){
               setState(() {
@@ -52,10 +48,14 @@ class ListItemWidget extends State<HistoryPage> {
                     remedies.add(data.documents[i].data['Remedies']);
                     timestamps.add(data.documents[i].data['Time']);
                 }
+                _isLoading = false;
+                emailid = emailID;
                 }
               );
           }
       });
+      
+      
       
   }
   @override
@@ -63,12 +63,18 @@ class ListItemWidget extends State<HistoryPage> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: Text('Aatmarnirbhar Farmer'),
+        title: Text('Aatmanirbhar Farmer'),
         backgroundColor: Colors.amber,
       ),
-      body: Container(
-        child: ListView.builder(
-        
+      body: _isLoading ? Center(
+                      child: CircularProgressIndicator(),
+                    ):
+      urls.length == 0 ?  
+      Container(
+        child:Center(child: Text("No History yet, take a photo!", textAlign: TextAlign.center,style: TextStyle(fontSize: 32,), softWrap: true,))
+        )
+      :Container(
+      child: ListView.builder(
       itemCount: urls.length,
       itemBuilder: (context, index) {
         return Dismissible(
@@ -82,7 +88,16 @@ class ListItemWidget extends State<HistoryPage> {
             ),
           ),
           onDismissed: (direction) {
+            Firestore.instance.collection('users').document(emailid).collection('History').where("Image URL", isEqualTo: urls[index]).limit(1).getDocuments().then((snapshot){
+              snapshot.documents.first.reference.delete();
+              });
             setState(() {
+              // var jobskill_query = Firestore.instance.collection('users').document(emailid).collection('History').where('imageUrl'==urls[index]).limit(length);
+              // jobskill_query.getDocuments().then((querySnapshot) {
+              // querySnapshot.forEach((doc) {
+              //     doc.ref.delete();
+              // });
+              // });
               urls.removeAt(index);
             });
           },
@@ -100,7 +115,7 @@ class ListItemWidget extends State<HistoryPage> {
                 children: <Widget>[
                   Container(
                     height: 200.0,
-                    width: 120.0,
+                    width: 100.0,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.only(
                         bottomLeft: Radius.circular(5),
@@ -123,32 +138,40 @@ class ListItemWidget extends State<HistoryPage> {
                             diseases[index],style: TextStyle(color: Colors.black,
                             ),
                           ),
-                          Flexible(
-                            child:Padding(
+                          
+                            Padding(
                             padding: EdgeInsets.fromLTRB(0, 12, 0, 5),
                               child: Container(
                               // width: 260,
-                              child: Text("Disease: "+diseases[index],style: TextStyle(
+                              child: 
+                              Text("Disease: "+diseases[index],style: TextStyle(
                                 fontSize: 18,
                                 color: Colors.black,
-                              ),),
+                              ),
+                              ),
                               
                             ),
-                          ),),
+                          ),
                           
                           Padding(
                               padding: EdgeInsets.fromLTRB(0, 12, 0, 3),
                               child: Container(
-                              width: 105,
+                              width: 135,
                               decoration: BoxDecoration(
                                 border: Border.all(color: Colors.teal),
                                 borderRadius: BorderRadius.all(Radius.circular(10))
                               ),
                               child: FlatButton(
-                                child: Text("View More",textAlign: TextAlign.justify,style: TextStyle(color: Colors.teal,)),
+                                child:Text("View More",textAlign: TextAlign.justify,style: TextStyle(color: Colors.teal,)
+                                  ),
+                                
                                 onPressed: (){
+                                  print(urls[index]);
+                                  print(diseases[index]);
+                                  print(remedies[index]);
+                                  print(timestamps[index]);
                                   Navigator.push(context,
-                                  MaterialPageRoute(builder: (context) => HistDetail()));
+                                  MaterialPageRoute(builder: (context) => HistDetail(url:urls[index], disease:diseases[index],remedy:remedies[index], timestamp:timestamps[index])));
                                 
                                 },
                                 ),
@@ -312,7 +335,7 @@ class _MyListState extends State<MyList> {
             case ConnectionState.done:
               if (snapshot.hasError)
                 return Center(child: Text('Error: ${snapshot.error}'));
-              if (!snapshot.hasData) return Text('No data finded!');
+              if (!snapshot.hasData) return Text('No data found!');
               return Card(
               elevation: 5,
               semanticContainer: true,

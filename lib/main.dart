@@ -1,26 +1,94 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_fire_auth/history.dart';
 import 'package:flutter_fire_auth/introslides.dart';
-// import 'package:introduction_screen/introduction_screen.dart';
+import 'package:flutter_fire_auth/profile_no_login.dart';
 import 'ui_access.dart';
-import 'welcome.dart';
-import 'Login-Register/login.dart';
-import 'profile.dart';
+// import 'Login-Register/login.dart';
+// import 'homepage.dart';
+import 'root_page.dart';
+import 'package:flutter_fire_auth/services/authentication.dart';
+// import 'welcome.dart';
 void main() {
   runApp(MyApp());
 }
-
 class MyApp extends StatelessWidget {
   @override
+//   final BaseAuth auth = new Auth();
+//   @override
+//   State<StatefulWidget> createState() => new _MyAppState();
+// }
+// class _MyAppState extends State<MyApp> {  
+
+  // AuthStatus authStatus = AuthStatus.NOT_DETERMINED;
+  // String _userId = "";
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   widget.auth.getCurrentUser().then((user) {
+  //     setState(() {
+  //       if (user != null) {
+  //         _userId = user?.uid;
+  //       }
+  //       authStatus =
+  //           user?.uid == null ? AuthStatus.NOT_LOGGED_IN : AuthStatus.LOGGED_IN;
+  //     });
+  //   });
+  // }
+  // void loginCallback() {
+  //   widget.auth.getCurrentUser().then((user) {
+  //     setState(() {
+  //       _userId = user.uid.toString();
+  //       print('Login Call Back User: $_userId');
+  //       print("user id mila");
+  //     });
+  //   });
+  //   setState(() {
+  //     authStatus = AuthStatus.LOGGED_IN;
+  //     print("logged in!");
+  //   });
+  // }
+
+  // void loginCallbackRegister() {
+  //   widget.auth.getCurrentUser().then((user) {
+  //     setState(() {
+  //       _userId = user.uid.toString();
+  //       print('Login Call Back User: $_userId');
+  //       print("user id mila");
+  //     });
+  //   });
+  //   setState(() {
+  //     authStatus = AuthStatus.LOGGED_IN_REGISTER;
+  //     print("logged in by register!");
+  //   });
+  // }
+  // // void homeCallback(){
+  // //    setState(() {
+  // //     authStatus = AuthStatus.LOGGED_IN;
+    
+  // //   });
+  // // }
+
+  // void logoutCallback() {
+  //   setState(() {
+  //     authStatus = AuthStatus.NOT_LOGGED_IN;
+  //     _userId = "";
+  //   });
+  // }
+
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Aatmanirbhar Farmer',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(primarySwatch: Colors.blue),
-      home: WelcomePage2(),
+      home: new RootPage(auth: new Auth()),
       routes: {
-              "/login": (_) => new LoginPage(),
+              // "/login": (_) => new LoginPage(loginCallback:loginCallback, loginCallbackRegister:loginCallbackRegister),
               "/ui_access": (_) => new UiAccess(),
+              // "/welcome": (_) => new WelcomePage2(loginCallback:loginCallback, loginCallbackRegister:loginCallbackRegister),
               "/intro": (_) => new IntroSlides(),
+              // "/home": (_) => new HomePage(logoutCallback: logoutCallback),
+              "/history": (_) => new HistoryPage(),
+              "/historyNoLogin": (_) => new ProfileNoLogin(),
               },
     );
   }

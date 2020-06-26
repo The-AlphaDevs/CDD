@@ -13,9 +13,10 @@ class _ResultState extends State<Result> {
   static final obj = ImageStorer();
   File cropimage = obj.getImage();
 
-  void googleSearch() async {
-    const String search_query = "Diseases similar to Tomato late blight";
-    const url = "https://www.google.com/search?q=" + search_query;
+  void googleSearch(String queryWord) async {
+    // String queryWord;
+    // const String search_query = "Diseases similar to Tomato late blight";
+    String url = "https://www.google.com/search?q=" + queryWord;
     if (await canLaunch(url)) {
       await launch(url);
     } else {
@@ -39,11 +40,21 @@ class _ResultState extends State<Result> {
           child:SingleChildScrollView(
                     child: Column(
                 children: <Widget>[
+
                   Container(
                     height: 350,
                     width: 380,
                     margin: EdgeInsets.fromLTRB(20, 40, 20, 0),
-                    child: Image.file(cropimage),
+                    decoration: BoxDecoration(
+                          border: Border.all(
+                            color: Color(0xff000000),
+                            width: 6,
+                          )),
+                      child:  Image.file(cropimage,
+                        width: 380,
+                        height: 350,
+                        fit: BoxFit.cover),
+                    
                   ),
                   SizedBox(
                     height: 40,
@@ -132,7 +143,7 @@ class _ResultState extends State<Result> {
                     color: Color(0xFFa4f5ff),
                     padding: EdgeInsets.all(30),
                     height: 98,
-                    width: 380,
+                    width: 385,
                     child: Column(
                       children: <Widget>[
                         Row(
@@ -157,17 +168,21 @@ class _ResultState extends State<Result> {
                     height: 20,
                     width: 20,
                   ),
-                  Row(
+                  Column(
+                    children: <Widget>[
+                      Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      Container(
-                        height: 60,
-                        width: 250,
+                      Flexible(
+                        child:
+                        Container(
+                        height: 55,
+                        width: 190,
                         child: RaisedButton.icon(
                           label: Text(
                             "Crops with  \nSimilar Diseases",
                             style: TextStyle(
-                                fontSize: 18,
+                                fontSize: 14,
                                 fontWeight: FontWeight.w800,
                                 fontFamily: 'Nunito',
                                 color: Colors.white),
@@ -178,21 +193,60 @@ class _ResultState extends State<Result> {
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(17)),
                           onPressed: () {
-                            googleSearch();
+                            googleSearch("Diseases similar to Tomato late blight");
                             // pickImageFromGallery(ImageSource.gallery);
                             // Navigator.push(context,
-                            //     MaterialPageRoute(builder: (context) => Predict(cropimage: _image)));
+                            //MaterialPageRoute(builder: (context) => Predict(cropimage: _image)));
                           },
                         ),
                       ),
+                      ),
+                    ],),
+                      SizedBox(
+                    height: 20,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children : <Widget>[
+                      Flexible(
+                      child:Container(
+                        height: 50,
+                        width: 190,
+                        child: RaisedButton.icon(
+                          label: Text(
+                            "More Remedies!",
+                            style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w800,
+                                fontFamily: 'Nunito',
+                                color: Colors.white),
+                          ),
+                          textColor: Colors.white,
+                          icon: Icon(Icons.search, color: Colors.white),
+                          color: Colors.amber,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(17)),
+                          onPressed: () {
+                            googleSearch("Home Remedies for Tomato late blight");
+                            // pickImageFromGallery(ImageSource.gallery);
+                            // Navigator.push(context,
+                            // MaterialPageRoute(builder: (context) => Predict(cropimage: _image)));
+                          },
+                        ),
+                      ),
+                      ),
+                    
+                  //     SizedBox(
+                  //   height: 30,
+                  // ),
                     ],
                   ),
-
                   SizedBox(
                     height: 30,
-                    width: 20,
                   ),
-
+                    ],
+                  )
+                  
                 ],
               ),
             ),

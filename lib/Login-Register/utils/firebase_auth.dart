@@ -1,6 +1,7 @@
 //11 June 2020
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class AuthProvider {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -27,7 +28,7 @@ class AuthProvider {
     }
   }
 
-  Future<bool> loginWithGoogle() async {
+Future<bool> loginWithGoogle() async {
     try {
       GoogleSignIn googleSignIn = GoogleSignIn();
       GoogleSignInAccount account = await googleSignIn.signIn();
@@ -39,7 +40,12 @@ class AuthProvider {
       ));
       if(res.user == null)
         return false;
+      // print(res.user);
+      Firestore.instance.collection('users').document(res.user.email).setData(
+            {'email': res.user.email, 'displayName': res.user.displayName});
+      print("inserted in firestore from res.user!");
       return true;
+      
     } catch (e) {
       print(e.message);
       print("Error logging with google");

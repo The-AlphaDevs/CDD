@@ -6,7 +6,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:path/path.dart' as Path; 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:intl/date_symbol_data_local.dart';
+//import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 
 
@@ -44,11 +44,11 @@ class _PredictState extends State<Predict> {
       final user = await _auth.currentUser();
       final email = user.email;
       String timeString = DateFormat("dd M yyyy hh:mm:ss").format(now);
-
+      String confidence = '99.999 %';
       
       print("Getting url \n");
       
-      Firestore.instance.collection('users').document(email).collection('History').document().setData({'Image URL':_uploadedFileURL, 'Remedies':'Pata Nahi' , 'Predicted Disease':'Tomato_late_blight', 'Time': timeString});
+      Firestore.instance.collection('users').document(email).collection('History').document().setData({'Image URL':_uploadedFileURL, 'Remedies':'Pata Nahi' , 'Predicted Disease':'Tomato_late_blight', 'Time': timeString, 'Confidence':confidence});
       print("b \n"+ _uploadedFileURL);
   }
 
@@ -71,8 +71,17 @@ class _PredictState extends State<Predict> {
                   Container(
                     height:400,
                     width:420,
-                    // margin: EdgeInsets.fromLTRB(20, 40, 20, 0),
-                child: cropimage == null ? Container(child: Text("Please select an image first!")) : Image.file(cropimage)
+                    margin: EdgeInsets.fromLTRB(20, 40, 20, 0),
+                // child: cropimage == null ? Container(child: Text("Please select an image first!")) : Image.file(cropimage)
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Color(0xff000000),
+                      width: 6,
+                    )),
+                  child:  Image.file(cropimage,
+                    width: 400,
+                    height:380,
+                    fit: BoxFit.cover),
               ),
               SizedBox(
                     height: 60,

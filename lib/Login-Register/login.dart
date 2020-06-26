@@ -5,10 +5,18 @@ import 'package:google_fonts/google_fonts.dart';
 import 'bezierContainer.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-// import 'package:flutter_fire_auth/introslides.dart';
+import 'package:flutter_fire_auth/introslides.dart';
 import 'package:flutter_fire_auth/welcome.dart';
+import 'package:flutter_fire_auth/homepage.dart';
+// import 'package:flutter_fire_auth/services/authentication.dart';
+// import 'package:flutter_fire_auth/root_page.dart';
 
 class LoginPage extends StatefulWidget {
+  final VoidCallback loginCallback;
+  final VoidCallback loginCallbackRegister;
+  final VoidCallback logoutCallback;
+  // final BaseAuth auth;
+  LoginPage({this.loginCallback, this.loginCallbackRegister, this.logoutCallback});
   @override
   _LoginPageState createState() => _LoginPageState();
 }
@@ -117,7 +125,7 @@ class _LoginPageState extends State<LoginPage> {
                             // ),
                             Positioned(
 
-                              child: Container(
+                        child: Container(
                         padding:EdgeInsets.fromLTRB(30,40,0,0),
                         child:RichText(
                         textAlign: TextAlign.center,
@@ -287,8 +295,9 @@ void _validateRegisterInput() async {
           UserUpdateInfo userUpdateInfo = new UserUpdateInfo();
           userUpdateInfo.displayName = _displayName;
           user.updateProfile(userUpdateInfo).then((onValue) {
-            Navigator.pushReplacementNamed(context, "/login");
-            Firestore.instance.collection('users').document().setData(
+            // Navigator.pushReplacementNamed(context, "/login");
+            Navigator.pushReplacementNamed(context, "/intro");
+            Firestore.instance.collection('users').document(_email).setData(
                 {'email': _email, 'displayName': _displayName}).then((onValue) {
               _sheetController.setState(() {
                 _loading = false;
@@ -549,7 +558,10 @@ void _validateRegisterInput() async {
                           else
                           {
                             //Redirect
-                            Navigator.pushReplacementNamed(context, "/intro");
+                            widget.loginCallback();
+                            // Navigator.pushReplacementNamed(context, "/intro");
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage(logoutCallback: widget.logoutCallback)));
+
                             // IntroSlides();
                           }
 
@@ -598,8 +610,9 @@ void _validateRegisterInput() async {
                                       else
                                       {
                                         //Redirect
-                                        Navigator.pushReplacementNamed(context, "/intro");
-                                        // IntroSlides();
+                                        widget.loginCallbackRegister();
+                                        Navigator.push(
+                                        context, MaterialPageRoute(builder: (context) => IntroSlides( logoutCallback: widget.logoutCallback, loginCallback: widget.loginCallback, loginCallbackRegister: widget.loginCallbackRegister)));                                        // IntroSlides();
                                       }
                                 },
                                 child: Text('Sign In with Google',

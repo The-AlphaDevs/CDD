@@ -1,9 +1,14 @@
 //11 June 2020
 import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
+import 'ui_access.dart';
 //import 'ui_access.dart';
 
 class IntroSlides extends StatefulWidget {
+    final VoidCallback logoutCallback;
+    final VoidCallback loginCallbackRegister;
+    final VoidCallback loginCallback;    
+    IntroSlides({this.logoutCallback,this.loginCallback, this.loginCallbackRegister});
   @override
   _IntroSlidesState createState() => _IntroSlidesState();
 }
@@ -12,7 +17,9 @@ class _IntroSlidesState extends State<IntroSlides> {
   final introKey = GlobalKey<IntroductionScreenState>();
 
   void _onIntroEnd(context) {
-    Navigator.pushReplacementNamed(context, "/ui_access");
+    // Navigator.pushReplacementNamed(context, "/ui_access");
+    Navigator.push(
+            context, MaterialPageRoute(builder: (context) => UiAccess( logoutCallback: widget.logoutCallback, loginCallback: widget.loginCallback, loginCallbackRegister: widget.loginCallbackRegister)));
   }
 
   @override

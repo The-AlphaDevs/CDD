@@ -1,20 +1,26 @@
 import 'package:flutter/material.dart';
-import 'profile.dart';
-import'home.dart';
+import 'home.dart';
 import 'profile_main.dart';
 import 'history_main.dart';
+// import 'package:flutter_fire_auth/services/authentication.dart';
+
  class HomePage extends StatefulWidget {
+    final VoidCallback logoutCallback;
+    final VoidCallback loginCallbackRegister;
+    final VoidCallback loginCallback;  
+  //  final BaseAuth auth;
+   HomePage({this.logoutCallback,this.loginCallback, this.loginCallbackRegister});
   @override
   _HomePageState createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
   int currentTab=0;
-  final List<Widget> screens = [
-    Home(),
-    HistoryMain(),
-    ProfileMain(),
-  ];
+  //  List<Widget> screens = [
+  //   Home(),
+  //   HistoryMain(loginCallback: widget.loginCallback, logoutCallback: widget.logoutCallback, loginCallbackRegister: widget.loginCallbackRegister),
+  //   ProfileMain(),
+  // ];
   final PageStorageBucket bucket = PageStorageBucket();
   Widget currentScreen = Home();
   @override
@@ -65,7 +71,7 @@ class _HomePageState extends State<HomePage> {
                     onPressed: () {
                         setState(() {
                         currentScreen =
-                            HistoryMain(); // if user taps on this dashboard tab will be active
+                            HistoryMain(loginCallback: widget.loginCallback, logoutCallback: widget.logoutCallback, loginCallbackRegister: widget.loginCallbackRegister); // if user taps on this dashboard tab will be active
                         currentTab = 1;
                       });
                     },
@@ -91,7 +97,7 @@ class _HomePageState extends State<HomePage> {
                     onPressed: () {
                       setState(() {
                         currentScreen =
-                            ProfileMain(); // if user taps on this dashboard tab will be active
+                            ProfileMain(loginCallback: widget.loginCallback, logoutCallback: widget.logoutCallback, loginCallbackRegister: widget.loginCallbackRegister); // if user taps on this dashboard tab will be active
                         currentTab = 2;
                       });
                     },
