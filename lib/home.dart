@@ -20,7 +20,7 @@ class _HomeState extends State<Home> {
   var humidity;
   var now = new DateTime.now();
   File _image;
-  //File weather_image ; 
+  //File weather_image ;
   String weerImageString;
   final object = ImageStorer();
   final picker = ImagePicker();
@@ -62,11 +62,10 @@ class _HomeState extends State<Home> {
     final pickedFile = await picker.getImage(source: ImageSource.camera);
 
     setState(() {
-      _image =  File(pickedFile.path);
+      _image = File(pickedFile.path);
       // ImageStorer(storedimage: _image);
       object.setImage(_image);
     });
-
   }
 
   pickImageFromGallery(ImageSource source) async {
@@ -83,8 +82,8 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Color(0xFFFFFFFF),
-        appBar: AppBar(
+      backgroundColor: Color(0xFFFFFFFF),
+      appBar: AppBar(
         automaticallyImplyLeading: false,
         title: Text('Aatmanirbhar Farmer'),
         //backgroundColor: Colors.amber,
@@ -126,16 +125,14 @@ class _HomeState extends State<Home> {
                     ],
                   ),
                 ),
-
                 Divider(
                   color: Colors.black,
                   endIndent: 10.0,
                   indent: 10.0,
                 ),
-
                 Padding(
                   padding: EdgeInsets.fromLTRB(30, 0, 20, 0),
-                  child: Row(             
+                  child: Row(
                     children: <Widget>[
                       Text(
                         temperature != null
@@ -158,31 +155,32 @@ class _HomeState extends State<Home> {
                       //   builder:(BuildContext context, BoxConstraints constraints){
                       // ),
                       Flexible(
-                      child:Container(
-                        child: Image.asset(
-                          "images/weather.png",
-                          height: 68,
-                          width: 56,
+                        child: Container(
+                          child: Image.asset(
+                            "images/weather.png",
+                            height: 68,
+                            width: 56,
                           ),
-                      ),
+                        ),
                       ),
                       // ),
                     ],
                   ),
                 ),
-
                 Divider(
                   color: Colors.black,
                   endIndent: 10.0,
                   indent: 10.0,
                 ),
-
                 Padding(
                   padding: EdgeInsets.fromLTRB(30, 0, 20, 0),
                   child: Row(
                     children: <Widget>[
                       //weather_image ?
-                      Image.network('http://openweathermap.org/img/w/$weerImageString.png',height: 45,width:45),
+                      Image.network(
+                          'http://openweathermap.org/img/w/$weerImageString.png',
+                          height: 45,
+                          width: 45),
                       Text(
                         description != null
                             ? description.toString()[0].toUpperCase() +
@@ -213,7 +211,7 @@ class _HomeState extends State<Home> {
                       Text(
                         humidity != null
                             ? humidity.toString() + "%"
-                            : "Enable Location !",
+                            : "Loading..",
                         style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.w800,
@@ -240,26 +238,25 @@ class _HomeState extends State<Home> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Flexible(
-                        child:Column(
+                        child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children:<Widget>[
+                          children: <Widget>[
                             Padding(
-                              padding: EdgeInsets.fromLTRB(2.0,2.0,2.0,2.0),
-                              child:Text(
-                                  "Want to know which disease\n your crop is affected by?",
-                                  style: TextStyle(
-                                      fontSize: 22,
-                                      fontWeight: FontWeight.w900,
-                                      fontFamily: 'Nunito',
-                                      color: Colors.white),
-                                  softWrap: false,
-                                  textAlign: TextAlign.center,
-                                ),
+                              padding: EdgeInsets.fromLTRB(2.0, 2.0, 2.0, 2.0),
+                              child: Text(
+                                "Want to know which disease\n your crop is affected by?",
+                                style: TextStyle(
+                                    fontSize: 22,
+                                    fontWeight: FontWeight.w900,
+                                    fontFamily: 'Nunito',
+                                    color: Colors.white),
+                                softWrap: false,
+                                textAlign: TextAlign.center,
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
-                      
+                      ),
                     ],
                   ),
                 ],
@@ -270,522 +267,72 @@ class _HomeState extends State<Home> {
           // ),
 
           Flexible(
-          child: Column(
-          // mainAxisAlignment: MainAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children : <Widget>[ 
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center, 
-            children: <Widget>[
-            Container(
-              height: 50,
-              width: 200,
-              child: RaisedButton.icon(
-                label: Text(
-                  "Open Camera",
-                  style: TextStyle(fontSize: 18),
+            child: Column(
+              // mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Container(
+                        height: 50,
+                        width: 200,
+                        child: RaisedButton.icon(
+                          label: Text(
+                            "Open Camera",
+                            style: TextStyle(fontSize: 18),
+                          ),
+                          textColor: Colors.white,
+                          icon: Icon(Icons.camera, color: Colors.white),
+                          color: Colors.amber,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(17)),
+                          onPressed: () async {
+                            await getImage();
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => Predict()));
+                          },
+                        ),
+                      ),
+                    ]),
+                SizedBox(
+                  height: 25,
+                  width: 50,
                 ),
-                textColor: Colors.white,
-                icon: Icon(Icons.camera, color: Colors.white),
-                color: Colors.amber,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(17)),
-                onPressed:  () async {
-                  await getImage();
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => Predict()));
-                },
-              ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Container(
+                      height: 50,
+                      width: 200,
+                      child: RaisedButton.icon(
+                        label: Text(
+                          "Open Gallery",
+                          style: TextStyle(fontSize: 18),
+                        ),
+                        textColor: Colors.white,
+                        icon: Icon(Icons.image, color: Colors.white),
+                        color: Colors.amber,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(17)),
+                        onPressed: () async {
+                          await pickImageFromGallery(ImageSource.gallery);
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => Predict()));
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ],
             ),
-          ]),
-          SizedBox(
-            height: 25,
-            width: 50,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Container(
-                height: 50,
-                width: 200,
-                child: RaisedButton.icon(
-                  label: Text(
-                    "Open Gallery",
-                    style: TextStyle(fontSize: 18),
-                  ),
-                  textColor: Colors.white,
-                  icon: Icon(Icons.image, color: Colors.white),
-                  color: Colors.amber,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(17)),
-                  onPressed: () async { 
-                    await pickImageFromGallery(ImageSource.gallery);
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => Predict()));
-                  },
-                ),
-              ),
-            ],
           ),
         ],
-      ),
-          ),
-      ],
       ),
     );
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

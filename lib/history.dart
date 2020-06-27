@@ -1,10 +1,9 @@
-
 import 'package:flutter/material.dart';
 import 'history_detail.dart';
 // import 'Login-Register/utils/firebase_auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-
+import 'package:flutter_fire_auth/globals.dart' as globals;
 
 class HistoryPage extends StatefulWidget {
   @override
@@ -14,14 +13,12 @@ class HistoryPage extends StatefulWidget {
 }
 
 class ListItemWidget extends State<HistoryPage> {
-  
   @override
-  void initState(){
+  void initState() {
     super.initState();
-    //Loading
-    
     getData();
   }
+
   List items = getDummyList();
 
   List urls = new List();
@@ -30,34 +27,43 @@ class ListItemWidget extends State<HistoryPage> {
   List timestamps = new List();
   bool _isLoading = true;
   String emailid = '';
-  
+
   void getData() async {
     final _auth = FirebaseAuth.instance;
     final user1 = await _auth.currentUser();
     print(user1);
     String emailID = user1.email;
-    new CircularProgressIndicator();
-    var userQuery =  Firestore.instance.collection('users').document(emailID).collection('History').orderBy('Time', descending:true);
-    userQuery.getDocuments().then((data){ 
-          if (data.documents.length > 0){
-              setState(() {
-                for( var i = 0; i < data.documents.length; i++)
-                {
-                    urls.add(data.documents[i].data['Image URL']);
-                    diseases.add(data.documents[i].data['Predicted Disease']);
-                    remedies.add(data.documents[i].data['Remedies']);
-                    timestamps.add(data.documents[i].data['Time']);
-                }
-                _isLoading = false;
-                emailid = emailID;
-                }
-              );
-          }
+
+    var userQuery = Firestore.instance
+        .collection('users')
+        .document(emailID)
+        .collection('History')
+        .orderBy('Time', descending: true);
+
+    if (!globals.hasHistory) {
+      setState(() {
+        _isLoading = false;
       });
-      
-      
-      
+    }
+
+    userQuery.getDocuments().then((data) {
+      if (data.documents.length > 0) {
+        setState(() {
+          print("Loop !!");
+          for (var i = 0; i < data.documents.length; i++) {
+            urls.add(data.documents[i].data['Image URL']);
+            diseases.add(data.documents[i].data['Predicted Disease']);
+            remedies.add(data.documents[i].data['Remedies']);
+            timestamps.add(data.documents[i].data['Time']);
+          }
+          _isLoading = false;
+          print("isLoading = False");
+          emailid = emailID;
+        });
+      }
+    });
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -66,128 +72,156 @@ class ListItemWidget extends State<HistoryPage> {
         title: Text('Aatmanirbhar Farmer'),
         backgroundColor: Colors.amber,
       ),
-      body: _isLoading ? Center(
-                      child: CircularProgressIndicator(),
-                    ):
-      urls.length == 0 ?  
-      Container(
-        child:Center(child: Text("No History yet, take a photo!", textAlign: TextAlign.center,style: TextStyle(fontSize: 32,), softWrap: true,))
-        )
-      :Container(
-      child: ListView.builder(
-      itemCount: urls.length,
-      itemBuilder: (context, index) {
-        return Dismissible(
-          key: Key(urls[index]),
-          background: Container(
-            alignment: AlignmentDirectional.centerEnd,
-            color: Colors.red,
-            child: Icon(
-              Icons.delete,
-              color: Colors.white,
-            ),
-          ),
-          onDismissed: (direction) {
-            Firestore.instance.collection('users').document(emailid).collection('History').where("Image URL", isEqualTo: urls[index]).limit(1).getDocuments().then((snapshot){
-              snapshot.documents.first.reference.delete();
-              });
-            setState(() {
-              // var jobskill_query = Firestore.instance.collection('users').document(emailid).collection('History').where('imageUrl'==urls[index]).limit(length);
-              // jobskill_query.getDocuments().then((querySnapshot) {
-              // querySnapshot.forEach((doc) {
-              //     doc.ref.delete();
-              // });
-              // });
-              urls.removeAt(index);
-            });
-          },
-          direction: DismissDirection.endToStart,
-          child: Card(
-              color: Colors.white,
-              elevation: 5,
-              semanticContainer: true,
-              shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12.0),
+      body: _isLoading
+          ? Center(
+              child: CircularProgressIndicator(),
+            )
+          : !globals.hasHistory
+              ? Container(
+                  child: Center(
+                      child: Text(
+                  "No History yet, take a photo!",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 32,
                   ),
-              child: Container(
-              //height: 150.0,
-              child: Row(
-                children: <Widget>[
-                  Container(
-                    height: 200.0,
-                    width: 100.0,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(5),
-                        topLeft: Radius.circular(5)
+                  softWrap: true,
+                )))
+              : Container(
+                  child: ListView.builder(
+                  itemCount: urls.length,
+                  itemBuilder: (context, index) {
+                    return Dismissible(
+                      key: Key(urls[index]),
+                      background: Container(
+                        alignment: AlignmentDirectional.centerEnd,
+                        color: Colors.red,
+                        child: Icon(
+                          Icons.delete,
+                          color: Colors.white,
+                        ),
                       ),
-                      image: DecorationImage(
-                        fit: BoxFit.cover,
-                        image: NetworkImage(urls[index])
-                      )
-                    ),
-                  ),
-                  Container(
-                    height: 200,
-                    child: Padding(
-                      padding: EdgeInsets.fromLTRB(10, 6, 0, 0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            diseases[index],style: TextStyle(color: Colors.black,
-                            ),
-                          ),
-                          
-                            Padding(
-                            padding: EdgeInsets.fromLTRB(0, 12, 0, 5),
-                              child: Container(
-                              // width: 260,
-                              child: 
-                              Text("Disease: "+diseases[index],style: TextStyle(
-                                fontSize: 18,
-                                color: Colors.black,
+                      onDismissed: (direction) {
+                        Firestore.instance
+                            .collection('users')
+                            .document(emailid)
+                            .collection('History')
+                            .where("Image URL", isEqualTo: urls[index])
+                            .limit(1)
+                            .getDocuments()
+                            .then((snapshot) {
+                          snapshot.documents.first.reference.delete();
+                        });
+                        setState(() {
+                          // var jobskill_query = Firestore.instance.collection('users').document(emailid).collection('History').where('imageUrl'==urls[index]).limit(length);
+                          // jobskill_query.getDocuments().then((querySnapshot) {
+                          // querySnapshot.forEach((doc) {
+                          //     doc.ref.delete();
+                          // });
+                          // });
+                          urls.removeAt(index);
+                        });
+                      },
+                      direction: DismissDirection.endToStart,
+                      child: Card(
+                        color: Colors.white,
+                        elevation: 5,
+                        semanticContainer: true,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12.0),
+                        ),
+                        child: Container(
+                          //height: 150.0,
+                          child: Row(
+                            children: <Widget>[
+                              Container(
+                                height: 200.0,
+                                width: 100.0,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.only(
+                                        bottomLeft: Radius.circular(5),
+                                        topLeft: Radius.circular(5)),
+                                    image: DecorationImage(
+                                        fit: BoxFit.cover,
+                                        image: NetworkImage(urls[index]))),
                               ),
-                              ),
-                              
-                            ),
-                          ),
-                          
-                          Padding(
-                              padding: EdgeInsets.fromLTRB(0, 12, 0, 3),
-                              child: Container(
-                              width: 135,
-                              decoration: BoxDecoration(
-                                border: Border.all(color: Colors.teal),
-                                borderRadius: BorderRadius.all(Radius.circular(10))
-                              ),
-                              child: FlatButton(
-                                child:Text("View More",textAlign: TextAlign.justify,style: TextStyle(color: Colors.teal,)
+                              Container(
+                                height: 200,
+                                child: Padding(
+                                  padding: EdgeInsets.fromLTRB(10, 6, 0, 0),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      Text(
+                                        diseases[index],
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding:
+                                            EdgeInsets.fromLTRB(0, 12, 0, 5),
+                                        child: Container(
+                                          // width: 260,
+                                          child: Text(
+                                            "Disease: " + diseases[index],
+                                            style: TextStyle(
+                                              fontSize: 18,
+                                              color: Colors.black,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding:
+                                            EdgeInsets.fromLTRB(0, 12, 0, 3),
+                                        child: Container(
+                                          width: 135,
+                                          decoration: BoxDecoration(
+                                              border: Border.all(
+                                                  color: Colors.teal),
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(10))),
+                                          child: FlatButton(
+                                            child: Text("View More",
+                                                textAlign: TextAlign.justify,
+                                                style: TextStyle(
+                                                  color: Colors.teal,
+                                                )),
+                                            onPressed: () {
+                                              print(urls[index]);
+                                              print(diseases[index]);
+                                              print(remedies[index]);
+                                              print(timestamps[index]);
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          HistDetail(
+                                                              url: urls[index],
+                                                              disease: diseases[
+                                                                  index],
+                                                              remedy: remedies[
+                                                                  index],
+                                                              timestamp:
+                                                                  timestamps[
+                                                                      index])));
+                                            },
+                                          ),
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                
-                                onPressed: (){
-                                  print(urls[index]);
-                                  print(diseases[index]);
-                                  print(remedies[index]);
-                                  print(timestamps[index]);
-                                  Navigator.push(context,
-                                  MaterialPageRoute(builder: (context) => HistDetail(url:urls[index], disease:diseases[index],remedy:remedies[index], timestamp:timestamps[index])));
-                                
-                                },
                                 ),
-                            ),
+                              )
+                            ],
                           ),
-                        ],
+                        ),
                       ),
-                    ),
-                  )
-                ],
-              ),
-            ),
-          ),
-        );
-      },
-    )),
+                    );
+                  },
+                )),
     );
   }
 
@@ -202,20 +236,19 @@ class ListItemWidget extends State<HistoryPage> {
   // {
 
   // }
-   // static List getDiseases()
+  // static List getDiseases()
   // {
 
-  // } 
+  // }
   // static List getRemedies()
   // {
 
-  // } 
+  // }
   // static List getTimestamps()
   // {
 
   // }
 }
-
 
 class MyListView extends StatefulWidget {
   @override
@@ -302,18 +335,16 @@ class MyList extends StatefulWidget {
 }
 
 class _MyListState extends State<MyList> {
-
   String email;
-  
-  Future emailgetter() async{
+
+  Future emailgetter() async {
     final _auth = FirebaseAuth.instance;
     final user = await _auth.currentUser();
     email = user.email;
   }
-  
+
   @override
   Widget build(BuildContext context) {
-    
     //final _auth = FirebaseAuth.instance;
     emailgetter();
 
@@ -322,7 +353,12 @@ class _MyListState extends State<MyList> {
         title: Text("ListView Firestore"),
       ),
       body: StreamBuilder<QuerySnapshot>(
-        stream: Firestore.instance.collection("users").document(email).collection('History').snapshots(),
+        stream: Firestore.instance
+            .collection("users")
+            .document(email)
+            .collection('History')
+            .snapshots(),
+        // ignore: missing_return
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasError) return new Text('${snapshot.error}');
           switch (snapshot.connectionState) {
@@ -337,80 +373,86 @@ class _MyListState extends State<MyList> {
                 return Center(child: Text('Error: ${snapshot.error}'));
               if (!snapshot.hasData) return Text('No data found!');
               return Card(
-              elevation: 5,
-              semanticContainer: true,
-              shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12.0),
-                  ),
-              child: Container(
-              //height: 150.0,
-              child: Row(
-                children: <Widget>[
-                  
-                  Container(
-                    height: 200.0,
-                    width: 120.0,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(5),
-                        topLeft: Radius.circular(5)
+                elevation: 5,
+                semanticContainer: true,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12.0),
+                ),
+                child: Container(
+                  //height: 150.0,
+                  child: Row(
+                    children: <Widget>[
+                      Container(
+                        height: 200.0,
+                        width: 120.0,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.only(
+                                bottomLeft: Radius.circular(5),
+                                topLeft: Radius.circular(5)),
+                            image: DecorationImage(
+                                fit: BoxFit.cover,
+                                image: NetworkImage(
+                                    "https://crop-protection-network.s3.amazonaws.com/articles/Downy-Mildew-D.-Mueller-15.jpg"))),
                       ),
-                      image: DecorationImage(
-                        fit: BoxFit.cover,
-                        image: NetworkImage("https://crop-protection-network.s3.amazonaws.com/articles/Downy-Mildew-D.-Mueller-15.jpg")
-                      )
-                    ),
-                  ),
-                  Container(
-                    height: 200,
-                    child: Padding(
-                      padding: EdgeInsets.fromLTRB(10, 6, 0, 0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          // Text(
-                          //   items[index],
-                            
-                          // ),
-                          Flexible(
-                            child:Padding(
-                            padding: EdgeInsets.fromLTRB(0, 12, 0, 5),
-                              child: Container(
-                              // width: 260,
-                              child: Text("Disease: Tomato_Early_Blight",style: TextStyle(
-                                fontSize: 18,
-                                color: Colors.black,
-                              ),),
-                              
-                            ),
-                          ),),
-                          
-                          Padding(
-                              padding: EdgeInsets.fromLTRB(0, 12, 0, 3),
-                              child: Container(
-                              width: 105,
-                              decoration: BoxDecoration(
-                                border: Border.all(color: Colors.teal),
-                                borderRadius: BorderRadius.all(Radius.circular(10))
-                              ),
-                              child: FlatButton(
-                                child: Text("View More",textAlign: TextAlign.justify,style: TextStyle(color: Colors.teal,)),
-                                onPressed: (){
-                                  Navigator.push(context,
-                                  MaterialPageRoute(builder: (context) => HistDetail()));
-                                
-                                },
+                      Container(
+                        height: 200,
+                        child: Padding(
+                          padding: EdgeInsets.fromLTRB(10, 6, 0, 0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              // Text(
+                              //   items[index],
+
+                              // ),
+                              Flexible(
+                                child: Padding(
+                                  padding: EdgeInsets.fromLTRB(0, 12, 0, 5),
+                                  child: Container(
+                                    // width: 260,
+                                    child: Text(
+                                      "Disease: Tomato_Early_Blight",
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                  ),
                                 ),
-                            ),
+                              ),
+
+                              Padding(
+                                padding: EdgeInsets.fromLTRB(0, 12, 0, 3),
+                                child: Container(
+                                  width: 105,
+                                  decoration: BoxDecoration(
+                                      border: Border.all(color: Colors.teal),
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(10))),
+                                  child: FlatButton(
+                                    child: Text("View More",
+                                        textAlign: TextAlign.justify,
+                                        style: TextStyle(
+                                          color: Colors.teal,
+                                        )),
+                                    onPressed: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  HistDetail()));
+                                    },
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
-                    ),
-                  )
-                ],
-              ),
-            ),
-          );
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              );
           }
         },
       ),

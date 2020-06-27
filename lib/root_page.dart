@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 // import 'authentication.dart';
 import 'homepage.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+// import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_fire_auth/services/authentication.dart';
 import 'welcome.dart';
 import 'introslides.dart';
@@ -12,7 +12,6 @@ import 'introslides.dart';
 //   Future<FirebaseUser> getCurrentUser();
 
 // }
-
 enum AuthStatus {
   NOT_DETERMINED,
   NOT_LOGGED_IN,
@@ -20,17 +19,20 @@ enum AuthStatus {
   LOGGED_IN_REGISTER,
 }
 
-class RootPage extends StatefulWidget {
-  RootPage({this.auth});
+// AuthStatus authStatus;
 
+class RootPage extends StatefulWidget {
+  // final AuthStatus authStatus = AuthStatus.NOT_DETERMINED;
   final BaseAuth auth;
+
+  RootPage({this.auth});
 
   @override
   State<StatefulWidget> createState() => new _RootPageState();
 }
 
 class _RootPageState extends State<RootPage> {
-  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  //final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   AuthStatus authStatus = AuthStatus.NOT_DETERMINED;
   String _userId = "";
 
@@ -83,7 +85,7 @@ class _RootPageState extends State<RootPage> {
   // void homeCallback(){
   //    setState(() {
   //     authStatus = AuthStatus.LOGGED_IN;
-    
+
   //   });
   // }
 
@@ -111,25 +113,31 @@ class _RootPageState extends State<RootPage> {
         break;
       case AuthStatus.NOT_LOGGED_IN:
         print("Entered near welcome page");
-        return new WelcomePage2(loginCallbackRegister: loginCallbackRegister,loginCallback: loginCallback, logoutCallback: logoutCallback);
+        return new WelcomePage2(
+            loginCallbackRegister: loginCallbackRegister,
+            loginCallback: loginCallback,
+            logoutCallback: logoutCallback);
         break;
       case AuthStatus.LOGGED_IN_REGISTER:
         print("Entered near intro page");
-        return new IntroSlides(loginCallbackRegister: loginCallbackRegister,loginCallback: loginCallback, logoutCallback: logoutCallback);
+        return new IntroSlides(
+            loginCallbackRegister: loginCallbackRegister,
+            loginCallback: loginCallback,
+            logoutCallback: logoutCallback);
         break;
       case AuthStatus.LOGGED_IN:
-        if (_userId.length > 0 && _userId != null) 
-        {
+        if (_userId.length > 0 && _userId != null) {
           print("Entered near home page");
           // return new Scafffold(
           //   body:Text("Home Page") ,
           // );
-         return HomePage(
-            // userId: _userId,
-            // auth: widget.auth,
-            // logoutCallback: logoutCallback,
-            loginCallbackRegister: loginCallbackRegister,loginCallback: loginCallback, logoutCallback: logoutCallback
-          ); 
+          return HomePage(
+              // userId: _userId,
+              // auth: widget.auth,
+              // logoutCallback: logoutCallback,
+              loginCallbackRegister: loginCallbackRegister,
+              loginCallback: loginCallback,
+              logoutCallback: logoutCallback);
         } else
           return buildWaitingScreen();
         break;

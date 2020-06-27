@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 // import 'package:flutter_fire_auth/utils/firebase_auth.dart';
-import 'Login-Register/login.dart';
+// import 'Login-Register/login.dart';
+import 'welcome.dart';
 
 class ProfileNoLogin extends StatelessWidget {
   final VoidCallback loginCallback;
@@ -38,7 +39,7 @@ class ProfileNoLogin extends StatelessWidget {
               onPressed: ()
               {
             Navigator.push(
-            context, MaterialPageRoute(builder: (context) => LoginPage(loginCallback:loginCallback, loginCallbackRegister:loginCallbackRegister, logoutCallback: logoutCallback)));              },
+            context, MaterialPageRoute(builder: (context) => WelcomePage2(loginCallback:loginCallback, loginCallbackRegister:loginCallbackRegister, logoutCallback: logoutCallback)));              },
               
             )
             ),

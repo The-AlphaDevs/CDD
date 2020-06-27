@@ -9,7 +9,8 @@ import 'history_main.dart';
     final VoidCallback loginCallbackRegister;
     final VoidCallback loginCallback;  
   //  final BaseAuth auth;
-   HomePage({this.logoutCallback,this.loginCallback, this.loginCallbackRegister});
+  HomePage({this.logoutCallback,this.loginCallback, this.loginCallbackRegister});
+  
   @override
   _HomePageState createState() => _HomePageState();
 }
