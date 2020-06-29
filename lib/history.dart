@@ -120,8 +120,7 @@ class ListItemWidget extends State<HistoryPage> {
                           // });
                           // });
                           urls.removeAt(index);
-                          if (urls.length == 0) 
-                          {
+                          if (urls.length == 0) {
                             globals.hasHistory = false;
                           }
                         });

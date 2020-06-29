@@ -53,6 +53,9 @@ class _HomeState extends State<Home> {
     super.initState();
     // _loading = true;
     this.getWeather();
+    // setState(() {
+    //   this.getWeather();
+    // });
   }
 
   Future getImage() async {
@@ -81,6 +84,7 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+    // getWeather();
     return Scaffold(
       backgroundColor: Color(0xFFFFFFFF),
       appBar: AppBar(

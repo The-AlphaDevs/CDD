@@ -330,13 +330,18 @@ class _LoginPageState extends State<LoginPage> {
         user.updateProfile(userUpdateInfo).then((onValue) {
           // Navigator.pushReplacementNamed(context, "/login");
           // Navigator.pushReplacementNamed(context, "/intro");
+          widget.loginCallbackRegister();
           Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => HomePage(
+                  builder: (context) => IntroSlides(
                       logoutCallback: widget.logoutCallback,
                       loginCallback: widget.loginCallback,
                       loginCallbackRegister: widget.loginCallbackRegister)));
+
+          globals.isLoggedIn = true;
+          globals.hasHistory = false;
+
           Firestore.instance.collection('users').document(_email).setData(
               {'email': _email, 'displayName': _displayName}).then((onValue) {
             _sheetController.setState(() {

@@ -5,6 +5,8 @@ import 'homepage.dart';
 import 'package:flutter_fire_auth/services/authentication.dart';
 import 'welcome.dart';
 import 'introslides.dart';
+import 'globals.dart' as globals;
+import 'package:cloud_firestore/cloud_firestore.dart';
 // import 'package:firebase_auth/firebase_auth.dart';
 // import 'package:flutter_login_demo/utils/firebase_auth.dart';
 // abstract class BaseAuth {
@@ -46,10 +48,31 @@ class _RootPageState extends State<RootPage> {
         }
         authStatus =
             user?.uid == null ? AuthStatus.NOT_LOGGED_IN : AuthStatus.LOGGED_IN;
+        if (user?.uid == null) {
+          globals.isLoggedIn = false;
+        } else {
+          globals.isLoggedIn = true;
+          checkHistoryStatus(user.email);
+        }
       });
     });
   }
 
+  void checkHistoryStatus(String emailID) {
+    var userQuery = Firestore.instance
+        .collection('users')
+        .document(emailID)
+        .collection('History')
+        .orderBy('Time', descending: true);
+
+    userQuery.getDocuments().then((data) {
+      if (data.documents.length > 0) {
+        globals.hasHistory = true;
+      } else {
+        globals.hasHistory = false;
+      }
+    });
+  }
   // Future<FirebaseUser> getCurrentUser() async {
   //   FirebaseUser user = await _firebaseAuth.currentUser();
   //   return user;

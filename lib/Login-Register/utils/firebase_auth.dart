@@ -57,9 +57,26 @@ class AuthProvider {
         accessToken: (await account.authentication).accessToken,
       ));
       if (res.user == null) return false;
-      // print(res.user);
-      Firestore.instance.collection('users').document(res.user.email).setData(
-          {'email': res.user.email, 'displayName': res.user.displayName});
+      final snapshot = await Firestore.instance
+          .collection('users')
+          .document(res.user.email)
+          .get();
+      if (snapshot == null || !snapshot.exists) {
+        // Document with id == docId doesn't exist.
+        Firestore.instance
+            .collection('users')
+            .document(res.user.email)
+            .setData({
+          'email': res.user.email,
+          'displayName': res.user.displayName,
+          'mobile_number': 'Enter Mobile Number',
+          'state': 'Enter City',
+        });
+      }
+      // if (temp == null) {
+      //   Firestore.instance.collection('users').document(res.user.email).setData(
+      //       {'email': res.user.email, 'displayName': res.user.displayName});
+      // }
       print("inserted in firestore from res.user!");
       checkHistoryStatus(res.user.email);
 

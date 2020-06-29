@@ -158,6 +158,7 @@ class _ProfilePageState extends State<ProfilePage> {
     signOutt() async {
       try {
         await signOut();
+        globals.isLoggedIn = false;
         widget.logoutCallback();
       } catch (e) {
         print(e);
@@ -178,7 +179,7 @@ class _ProfilePageState extends State<ProfilePage> {
             Column(
               children: <Widget>[
                 new Container(
-                  height: 70.0,
+                  height: 55.0,
                   // color:  Color(0xFFF9AA33),
                   child: new Column(
                     children: <Widget>[
@@ -324,8 +325,8 @@ class _ProfilePageState extends State<ProfilePage> {
                             )),
                         Divider(
                           color: Colors.black,
-                          endIndent: 10.0,
-                          indent: 10.0,
+                          endIndent: 6.0,
+                          indent: 6.0,
                         ),
                         Padding(
                             padding: EdgeInsets.only(
@@ -374,8 +375,8 @@ class _ProfilePageState extends State<ProfilePage> {
 
                         Divider(
                           color: Colors.black,
-                          endIndent: 10.0,
-                          indent: 10.0,
+                          endIndent: 6.0,
+                          indent: 6.0,
                         ),
                         Padding(
                             padding: EdgeInsets.only(
@@ -510,7 +511,6 @@ class _ProfilePageState extends State<ProfilePage> {
                     // AuthProvider().logOut();
                     signOutt();
                     // Navigator.pushReplacementNamed(context, "/welcome");
-                    globals.isLoggedIn = false;
                     SharedPreferences prefs =
                         await SharedPreferences.getInstance();
                     prefs.setBool('isLoggedIn', false);
@@ -561,6 +561,8 @@ class _ProfilePageState extends State<ProfilePage> {
                 color: Colors.green,
                 onPressed: () {
                   saveData();
+                  clearTextInput();
+                  getData();
                   // setState(() {
                   //   _status = true;
                   //   FocusScope.of(context).requestFocus(new FocusNode());
@@ -619,5 +621,3 @@ class _ProfilePageState extends State<ProfilePage> {
   // }
 
 }
-
-

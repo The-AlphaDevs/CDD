@@ -13,6 +13,34 @@ class _ResultState extends State<Result> {
   static final obj = ImageStorer();
   File cropimage = obj.getImage();
 
+  // loadModel() async {
+  //     await Tflite.loadModel(
+  //       model: "assets/crop_disease_detector.tflite",
+  //       labels: "assets/labels.txt",
+  //       numThreads: 1,
+  //     );
+  //   }
+  //   classifyImage(File image) async {
+  //     var output = await Tflite.runModelOnImage(
+  //         path: image.path,
+  //         imageMean: 0.0,
+  //         imageStd: 255.0,
+  //         numResults: 2,
+  //         threshold: 0.2,
+  //         asynch: true
+  //         );
+  //     setState(() {
+  //       _loading = false;
+  //       _outputs = output;
+  //       print(_outputs);
+  //     });
+  //   }
+  //   @override
+  //   void dispose() {
+  //     Tflite.close();
+  //     super.dispose();
+  //   }
+
   @override
   void initState() {
     super.initState();

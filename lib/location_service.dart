@@ -9,8 +9,9 @@ class LocationService {
   var lat;
   var long;
 
-  StreamController<UserLocation> _locationController = StreamController<UserLocation>();
-  
+  StreamController<UserLocation> _locationController =
+      StreamController<UserLocation>();
+
   Stream<UserLocation> get locationStream => _locationController.stream;
   LocationService() {
     // Request permission to use location
@@ -25,36 +26,29 @@ class LocationService {
             ));
           }
         });
+      } else {
+        _locationController.add(UserLocation(
+          latitude: null,
+          longitude: null,
+        ));
       }
-      else {
-            _locationController.add(UserLocation(
-              latitude: null,
-              longitude: null,
-            ));
-          }
     });
-
   }
-
 
   Future<UserLocation> getLocation() async {
     var userLocation = await location.getLocation();
     try {
       currentLocation = UserLocation(
-        latitude : userLocation.latitude,
+        latitude: userLocation.latitude,
         longitude: userLocation.longitude,
-      );  
+      );
 
       lat = userLocation.latitude;
       long = userLocation.longitude;
-     
-      } 
-    on Exception catch (e) {
+    } on Exception catch (e) {
       print('Could not get location: ${e.toString()}');
     }
-   
-    return currentLocation;
-   
-  } 
 
+    return currentLocation;
+  }
 }
