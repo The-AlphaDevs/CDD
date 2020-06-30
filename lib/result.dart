@@ -5,6 +5,12 @@ import 'package:url_launcher/url_launcher.dart';
 import 'globals.dart' as globals;
 
 class Result extends StatefulWidget {
+  final String predictedDisease;
+  final String confidence;
+  Result({
+    @required this.predictedDisease,
+    @required this.confidence,
+  });
   @override
   _ResultState createState() => _ResultState();
 }
@@ -12,34 +18,6 @@ class Result extends StatefulWidget {
 class _ResultState extends State<Result> {
   static final obj = ImageStorer();
   File cropimage = obj.getImage();
-
-  // loadModel() async {
-  //     await Tflite.loadModel(
-  //       model: "assets/crop_disease_detector.tflite",
-  //       labels: "assets/labels.txt",
-  //       numThreads: 1,
-  //     );
-  //   }
-  //   classifyImage(File image) async {
-  //     var output = await Tflite.runModelOnImage(
-  //         path: image.path,
-  //         imageMean: 0.0,
-  //         imageStd: 255.0,
-  //         numResults: 2,
-  //         threshold: 0.2,
-  //         asynch: true
-  //         );
-  //     setState(() {
-  //       _loading = false;
-  //       _outputs = output;
-  //       print(_outputs);
-  //     });
-  //   }
-  //   @override
-  //   void dispose() {
-  //     Tflite.close();
-  //     super.dispose();
-  //   }
 
   @override
   void initState() {
@@ -107,7 +85,7 @@ class _ResultState extends State<Result> {
                                     fontWeight: FontWeight.w900,
                                     fontFamily: 'Nunito',
                                     color: Colors.black),
-                                softWrap: false,
+                                softWrap: true,
                                 textAlign: TextAlign.center,
                               ),
                             ],
@@ -115,15 +93,17 @@ class _ResultState extends State<Result> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
-                              Text(
-                                "Tomato_late_blight",
-                                style: TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w900,
-                                    fontFamily: 'Nunito',
-                                    color: Colors.green),
-                                softWrap: false,
-                                textAlign: TextAlign.center,
+                              Flexible(
+                                child: Text(
+                                  widget.predictedDisease,
+                                  style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w900,
+                                      fontFamily: 'Nunito',
+                                      color: Colors.green),
+                                  softWrap: true,
+                                  textAlign: TextAlign.center,
+                                ),
                               ),
                             ],
                           ),
@@ -137,7 +117,7 @@ class _ResultState extends State<Result> {
                                     fontWeight: FontWeight.w900,
                                     fontFamily: 'Nunito',
                                     color: Colors.black),
-                                softWrap: false,
+                                softWrap: true,
                                 textAlign: TextAlign.center,
                               ),
                             ],
@@ -145,15 +125,17 @@ class _ResultState extends State<Result> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
-                              Text(
-                                "98.0876%",
-                                style: TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w900,
-                                    fontFamily: 'Nunito',
-                                    color: Colors.green),
-                                softWrap: false,
-                                textAlign: TextAlign.center,
+                              Flexible(
+                                child: Text(
+                                  widget.confidence + "%",
+                                  style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w900,
+                                      fontFamily: 'Nunito',
+                                      color: Colors.green),
+                                  softWrap: true,
+                                  textAlign: TextAlign.center,
+                                ),
                               ),
                             ],
                           ),
@@ -217,8 +199,8 @@ class _ResultState extends State<Result> {
                                   shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(17)),
                                   onPressed: () {
-                                    googleSearch(
-                                        "Diseases similar to Tomato late blight");
+                                    googleSearch("Diseases similar to " +
+                                        widget.predictedDisease);
                                     // pickImageFromGallery(ImageSource.gallery);
                                     // Navigator.push(context,
                                     //MaterialPageRoute(builder: (context) => Predict(cropimage: _image)));
@@ -240,7 +222,7 @@ class _ResultState extends State<Result> {
                                 width: 190,
                                 child: RaisedButton.icon(
                                   label: Text(
-                                    "More Remedies!",
+                                    "More Remedies",
                                     style: TextStyle(
                                         fontSize: 14,
                                         fontWeight: FontWeight.w800,
@@ -253,8 +235,8 @@ class _ResultState extends State<Result> {
                                   shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(17)),
                                   onPressed: () {
-                                    googleSearch(
-                                        "Home Remedies for Tomato late blight");
+                                    googleSearch("Home Remedies for " +
+                                        widget.predictedDisease);
                                     // pickImageFromGallery(ImageSource.gallery);
                                     // Navigator.push(context,
                                     // MaterialPageRoute(builder: (context) => Predict(cropimage: _image)));

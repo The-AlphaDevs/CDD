@@ -2,20 +2,15 @@
 // import 'package:flutter/material.dart';
 import 'dart:io';
 
-class ImageStorer
-{
+class ImageStorer {
   static File storedimage;
 
-  void setImage(File image) 
-  {
+  void setImage(File image) {
     storedimage = image;
     print(storedimage);
   }
-  
-  File getImage()
-  {
+
+  File getImage() {
     return storedimage;
   }
-
-  
 }
