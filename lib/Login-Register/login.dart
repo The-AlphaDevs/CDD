@@ -9,15 +9,13 @@ import 'package:flutter_fire_auth/introslides.dart';
 import 'package:flutter_fire_auth/welcome.dart';
 import 'package:flutter_fire_auth/homepage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-// import 'package:flutter_fire_auth/services/authentication.dart';
-// import 'package:flutter_fire_auth/root_page.dart';
 import 'package:flutter_fire_auth/globals.dart' as globals;
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class LoginPage extends StatefulWidget {
   final VoidCallback loginCallback;
   final VoidCallback loginCallbackRegister;
   final VoidCallback logoutCallback;
-  // final BaseAuth auth;
   LoginPage(
       {this.loginCallback, this.loginCallbackRegister, this.logoutCallback});
   @override
@@ -66,35 +64,6 @@ class _LoginPageState extends State<LoginPage> {
           child: Container(
             child: ListView(
               children: <Widget>[
-                // Container(
-                //   child: Stack(
-                //     children: <Widget>[
-                //       Positioned(
-                //         top: -height * .15,
-                //         right: -MediaQuery.of(context).size.width * .4,
-                //         child: BezierContainer()),
-                //       Positioned(
-                //         right: 10,
-                //         top: 10,
-                //         child: IconButton(
-                //           onPressed: () {
-                //             Navigator.of(context).pop();
-                //           },
-                //           icon: Icon(
-                //             Icons.close,
-                //             size: 30.0,
-                //             color: Colors.black,
-                //           ),
-                //         ),
-                //       ),
-                //       //Container
-                //       //padding: EdgeInsets.symmetric(horizontal: 20),
-                //       //child:
-                //     ],
-                //   ),
-                //   height: 100,
-                //   width: 50,
-                // ),
                 Container(
                   height: height,
                   child: Stack(
@@ -127,18 +96,6 @@ class _LoginPageState extends State<LoginPage> {
                               height: 140,
                               child: Stack(
                                 children: <Widget>[
-                                  // Positioned(
-                                  //   child: Align(
-                                  //     child: Container(
-                                  //       width: 130,
-                                  //       height: 130,
-                                  //       decoration: BoxDecoration(
-                                  //           shape: BoxShape.circle,
-                                  //           color: Theme.of(context).primaryColor),
-                                  //     ),
-                                  //     alignment: Alignment.center,
-                                  //   ),
-                                  // ),
                                   Positioned(
                                     child: Container(
                                       padding:
@@ -177,23 +134,6 @@ class _LoginPageState extends State<LoginPage> {
                                               ])),
                                     ),
                                   ),
-                                  // Positioned(
-                                  //   child: Align(
-                                  //     child: Container(
-                                  //       padding: EdgeInsets.only(top: 40, left: 28),
-                                  //       width: 130,
-                                  //       child: Text(
-                                  //         "STER",
-                                  //         style: TextStyle(
-                                  //           fontSize: 40,
-                                  //           fontWeight: FontWeight.bold,
-                                  //           color: Colors.white,
-                                  //         ),
-                                  //       ),
-                                  //     ),
-                                  //     alignment: Alignment.center,
-                                  //   ),
-                                  // ),
                                 ],
                               ),
                             ),
@@ -226,7 +166,6 @@ class _LoginPageState extends State<LoginPage> {
                                 child: CustomTextField(
                                   icon: Icon(Icons.lock),
                                   obsecure: true,
-                                  //color: Colors.amber,
                                   onSaved: (input) => _password = input,
                                   validator: (input) =>
                                       input.isEmpty ? "*Required" : null,
@@ -328,8 +267,6 @@ class _LoginPageState extends State<LoginPage> {
         UserUpdateInfo userUpdateInfo = new UserUpdateInfo();
         userUpdateInfo.displayName = _displayName;
         user.updateProfile(userUpdateInfo).then((onValue) {
-          // Navigator.pushReplacementNamed(context, "/login");
-          // Navigator.pushReplacementNamed(context, "/intro");
           widget.loginCallbackRegister();
           Navigator.push(
               context,
@@ -407,7 +344,7 @@ class _LoginPageState extends State<LoginPage> {
     _passwordController = TextEditingController(text: "");
   }
 
-  Widget _title() {
+  Widget buildTitleWidget() {
     return Container(
       padding: EdgeInsets.fromLTRB(0, 100, 0, 0),
       child: RichText(
@@ -437,7 +374,7 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Widget _divider() {
+  Widget buildDivider() {
     return Container(
       margin: EdgeInsets.symmetric(vertical: 10),
       child: Row(
@@ -474,7 +411,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     return Scaffold(
-      resizeToAvoidBottomPadding: false,
+      resizeToAvoidBottomInset: false,
       key: _scaffoldKey,
       body: Container(
         height: height,
@@ -491,211 +428,25 @@ class _LoginPageState extends State<LoginPage> {
                   padding: const EdgeInsets.fromLTRB(15, 25, 15, 25),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    // crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      //   Container(
-                      //   child: Stack(
-                      //     children: <Widget>[
-                      //       // Container(
-                      //       //   padding: EdgeInsets.fromLTRB(15.0, 110.0, 0.0, 0.0),
-                      //       //   child: Text('Aatmanirbhar',
-                      //       //       style: TextStyle(
-                      //       //           fontSize: 80.0, fontWeight: FontWeight.bold)),
-                      //       // ),
-                      //       // Container(
-                      //       //   padding: EdgeInsets.fromLTRB(16.0, 175.0, 0.0, 0.0),
-                      //       //   child: Text('Farmer',
-                      //       //       style: TextStyle(
-                      //       //           fontSize: 80.0, fontWeight: FontWeight.bold)),
-                      //       // ),
-                      //       // Container(
-                      //       //   padding: EdgeInsets.fromLTRB(220.0, 175.0, 0.0, 0.0),
-                      //       //   child: Text('.',
-                      //       //       style: TextStyle(
-                      //       //           fontSize: 80.0,
-                      //       //           fontWeight: FontWeight.bold,
-                      //       //           color: Colors.green)),
-                      //       // )
-                      //     ],
-                      //   ),
-                      // ),
-                      //SizedBox(height: height * .2),
-                      _title(),
-                      const SizedBox(height: 60.0),
-                      // Text("Login", style: TextStyle(
-                      //   fontWeight: FontWeight.w800,
-                      //   fontSize: 30.0,
-                      //   color: Color(0xffe46b10),
-                      // ),),
-                      const SizedBox(height: 20.0),
-                      // RaisedButton(
-                      //   child: Text("Login with Google", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w800, fontSize:22),),
-                      //   // textColor: ,
-                      //   color: Color(0xFF1ED760),
-                      //   shape: RoundedRectangleBorder(
-                      //         borderRadius: BorderRadius.circular(17)),
-                      //   onPressed: () async {
-                      //     bool res = await AuthProvider().loginWithGoogle();
-                      //     if(!res)
-                      //       print("Error logging in with google");
-                      //     else
-                      //     {
-                      //       //Redirect
-                      //       Navigator.pushReplacementNamed(context, "/home");
-                      //     }
-                      //   },
-                      // ),
+                      buildTitleWidget(),
+                      SizedBox(height: 80.0),
                       TextField(
                         controller: _emailController,
                         decoration: InputDecoration(hintText: "Enter email"),
                       ),
-                      const SizedBox(height: 10.0),
+                      SizedBox(height: 10.0),
                       TextField(
                         controller: _passwordController,
                         obscureText: true,
                         decoration: InputDecoration(hintText: "Enter password"),
                       ),
-                      const SizedBox(height: 50.0),
-                      Container(
-                        height: 40.0,
-                        child: Container(
-                          // color: Colors.amber,
-                          decoration: BoxDecoration(
-                              border: Border.all(
-                                  color: Colors.black,
-                                  style: BorderStyle.solid,
-                                  width: 1.0),
-                              color: Colors.amber,
-                              borderRadius: BorderRadius.circular(20.0)),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: <Widget>[
-                              Container(
-                                height: 50,
-                                width: 315,
-                                child: FlatButton(
-                                  child: Text(
-                                    "Login",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.w800,
-                                        fontFamily: 'Montserrat',
-                                        color: Colors.white,
-                                        fontSize: 20),
-                                  ),
-                                  color: Colors.amber,
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(20)),
-                                  onPressed: () async {
-                                    if (_emailController.text.isEmpty ||
-                                        _passwordController.text.isEmpty) {
-                                      print(
-                                          "Email and password cannot be empty");
-                                      return;
-                                    }
-                                    bool res = await AuthProvider()
-                                        .signInWithEmail(_emailController.text,
-                                            _passwordController.text);
-                                    if (!res) {
-                                      print("Login failed");
-                                    } else {
-                                      //Redirect
-                                      widget.loginCallback();
-                                      // Navigator.pushReplacementNamed(context, "/intro");
-                                      // Navigator.pop(context);
-                                      // Navigator.pop(context);
-                                      Navigator.pushReplacement(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) => HomePage(
-                                                  logoutCallback:
-                                                      widget.logoutCallback,
-                                                  loginCallback:
-                                                      widget.loginCallback,
-                                                  loginCallbackRegister: widget
-                                                      .loginCallbackRegister)));
-                                      //Navigator.pop(context);
-                                      globals.isLoggedIn = true;
-                                      checkHistoryStatus(_emailController.text);
-                                      SharedPreferences prefs =
-                                          await SharedPreferences.getInstance();
-                                      prefs.setBool('isLoggedIn', true);
-                                      // IntroSlides();
-                                    }
-                                  },
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 15.0),
-                      _divider(),
-                      const SizedBox(height: 15.0),
-                      Container(
-                        height: 40.0,
-                        //color: Colors.amber,
-                        child: Container(
-                          // color: Colors.amber,
-                          decoration: BoxDecoration(
-                              border: Border.all(
-                                  color: Colors.black,
-                                  style: BorderStyle.solid,
-                                  width: 1.0),
-                              color: Colors.amber,
-                              borderRadius: BorderRadius.circular(20.0)),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            //color: Colors.amber,
-                            children: <Widget>[
-                              //color: Colors.amber,
-                              Center(
-                                child:
-                                    ImageIcon(AssetImage('assets/google.png')),
-                              ),
-                              SizedBox(width: 10.0),
-                              Container(
-                                height: 50,
-                                width: 270,
-                                child: FlatButton(
-                                  onPressed: () async {
-                                    bool res =
-                                        await AuthProvider().loginWithGoogle();
-                                    if (!res)
-                                      print("Error logging in with Google");
-                                    else {
-                                      //Redirect
-                                      widget.loginCallbackRegister();
-                                      Navigator.pushReplacement(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) => IntroSlides(
-                                                  logoutCallback:
-                                                      widget.logoutCallback,
-                                                  loginCallback:
-                                                      widget.loginCallback,
-                                                  loginCallbackRegister: widget
-                                                      .loginCallbackRegister))); // IntroSlides();
-                                      globals.isLoggedIn = true;
-                                      SharedPreferences prefs =
-                                          await SharedPreferences.getInstance();
-                                      prefs.setBool('isLoggedIn', true);
-                                    }
-                                  },
-                                  child: Text('Sign In with Google',
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.w800,
-                                        fontFamily: 'Montserrat',
-                                        color: Colors.white,
-                                        fontSize: 20,
-                                      )),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
+                      SizedBox(height: 50.0),
+                      buildEmailLoginButton(context),
+                      SizedBox(height: 15.0),
+                      buildDivider(),
+                      SizedBox(height: 15.0),
+                      buildGoogleLoginButton(context),
                       SizedBox(height: 80.0),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -729,5 +480,116 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ),
     );
+  }
+
+  Container buildGoogleLoginButton(BuildContext context) {
+    return Container(
+                      height: 40.0,
+                      width: 270,
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: Colors.black,
+                          style: BorderStyle.solid,
+                          width: 1.0,
+                        ),
+                        color: Colors.amber,
+                        borderRadius: BorderRadius.circular(20.0),
+                        ),
+                      child: RaisedButton.icon(
+                        elevation: 0,
+                        icon: FaIcon(
+                          FontAwesomeIcons.google,
+                          size: 18,
+                        ),
+                        highlightColor: Colors.amber,
+                        color: Colors.amber,
+                        shape: StadiumBorder(),
+                        onPressed: () async {
+                            bool res = await AuthProvider().loginWithGoogle();
+                            if (!res)
+                              print("Error logging in with Google");
+                            else {
+                              //Redirect
+                              widget.loginCallbackRegister();
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => IntroSlides(
+                                    logoutCallback:
+                                        widget.logoutCallback,
+                                    loginCallback:
+                                        widget.loginCallback,
+                                    loginCallbackRegister: widget
+                                        .loginCallbackRegister))); // IntroSlides();
+                              globals.isLoggedIn = true;
+                              SharedPreferences prefs =
+                                await SharedPreferences.getInstance();
+                              prefs.setBool('isLoggedIn', true);
+                            }
+                          },
+                        label: Text(
+                                "Login with Google",
+                                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20,color: Colors.white),
+                              ),
+
+                      ),
+                    );
+  }
+
+  Container buildEmailLoginButton(BuildContext context) {
+    return Container(
+                      height: 40.0,
+                      width: 270,
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: Colors.black,
+                          style: BorderStyle.solid,
+                          width: 1.0,
+                        ),
+                        color: Colors.amber,
+                        borderRadius: BorderRadius.circular(20.0),
+                        ),
+                      child: RaisedButton(
+                        elevation: 0,
+                        highlightColor: Colors.amber,
+                        color: Colors.amber,
+                        shape: StadiumBorder(),
+                        onPressed: () async {
+                          if (_emailController.text.isEmpty ||
+                              _passwordController.text.isEmpty) {
+                            print("Email and password cannot be empty");
+                            return;
+                          }
+                          bool res = await AuthProvider()
+                              .signInWithEmail(_emailController.text,_passwordController.text);
+                          if (!res) {
+                            print("Login failed");
+                          } else {
+                            //Redirect
+                            widget.loginCallback();
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => HomePage(
+                                    logoutCallback:
+                                        widget.logoutCallback,
+                                    loginCallback:
+                                        widget.loginCallback,
+                                    loginCallbackRegister: widget
+                                        .loginCallbackRegister)));
+                            globals.isLoggedIn = true;
+                            checkHistoryStatus(_emailController.text);
+                            SharedPreferences prefs =
+                              await SharedPreferences.getInstance();
+                            prefs.setBool('isLoggedIn', true);
+                          }
+                        },
+                        child: Text(
+                          "Login",
+                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20,color: Colors.white),
+                        ),
+
+                      ),
+                    );
   }
 }

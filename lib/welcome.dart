@@ -576,7 +576,7 @@ class _WelcomePage2State extends State<WelcomePage2> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomPadding: false,
+      resizeToAvoidBottomInset: false,
       key: _scaffoldKey,
       body: SingleChildScrollView(
         child: Container(
