@@ -2,7 +2,6 @@
 import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'ui_access.dart';
-//import 'ui_access.dart';
 
 class IntroSlides extends StatefulWidget {
     final VoidCallback logoutCallback;
@@ -17,7 +16,6 @@ class _IntroSlidesState extends State<IntroSlides> {
   final introKey = GlobalKey<IntroductionScreenState>();
 
   void _onIntroEnd(context) {
-    // Navigator.pushReplacementNamed(context, "/ui_access");
     Navigator.push(
             context, MaterialPageRoute(builder: (context) => UiAccess( logoutCallback: widget.logoutCallback, loginCallback: widget.loginCallback, loginCallbackRegister: widget.loginCallbackRegister)));
   }
@@ -72,7 +70,6 @@ class _IntroSlidesState extends State<IntroSlides> {
               size: const Size.square(10.0),
               activeSize: const Size(20.0, 10.0),
               activeColor: Colors.amber,
-              // Theme.accentColor,
               color: Colors.black26,
               spacing: const EdgeInsets.symmetric(horizontal: 5.0),
               activeShape: RoundedRectangleBorder(

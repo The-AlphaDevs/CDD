@@ -1,14 +1,10 @@
 //11 June 2020
 import 'package:flutter/material.dart';
-// import 'Login-Register/login.dart';
-//import 'Login-Register/signup;.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'Login-Register/bezierContainer.dart';
 import 'Login-Register/login.dart';
-// import 'root_page.dart';
-// import 'package:flutter_fire_auth/services/authentication.dart';
 import 'introslides.dart';
 import 'package:flutter_fire_auth/globals.dart' as globals;
 
@@ -55,35 +51,6 @@ class _WelcomePage2State extends State<WelcomePage2> {
           child: Container(
             child: ListView(
               children: <Widget>[
-                // Container(
-                //   child: Stack(
-                //     children: <Widget>[
-                //       Positioned(
-                //         top: -height * .15,
-                //         right: -MediaQuery.of(context).size.width * .4,
-                //         child: BezierContainer()),
-                //       Positioned(
-                //         right: 10,
-                //         top: 10,
-                //         child: IconButton(
-                //           onPressed: () {
-                //             Navigator.of(context).pop();
-                //           },
-                //           icon: Icon(
-                //             Icons.close,
-                //             size: 30.0,
-                //             color: Colors.black,
-                //           ),
-                //         ),
-                //       ),
-                //       //Container
-                //       //padding: EdgeInsets.symmetric(horizontal: 20),
-                //       //child:
-                //     ],
-                //   ),
-                //   height: 100,
-                //   width: 50,
-                // ),
                 Container(
                   height: height,
                   child: Stack(
@@ -116,18 +83,6 @@ class _WelcomePage2State extends State<WelcomePage2> {
                               height: 140,
                               child: Stack(
                                 children: <Widget>[
-                                  // Positioned(
-                                  //   child: Align(
-                                  //     child: Container(
-                                  //       width: 130,
-                                  //       height: 130,
-                                  //       decoration: BoxDecoration(
-                                  //           shape: BoxShape.circle,
-                                  //           color: Theme.of(context).primaryColor),
-                                  //     ),
-                                  //     alignment: Alignment.center,
-                                  //   ),
-                                  // ),
                                   Positioned(
                                     child: Container(
                                       padding:
@@ -166,23 +121,6 @@ class _WelcomePage2State extends State<WelcomePage2> {
                                               ])),
                                     ),
                                   ),
-                                  // Positioned(
-                                  //   child: Align(
-                                  //     child: Container(
-                                  //       padding: EdgeInsets.only(top: 40, left: 28),
-                                  //       width: 130,
-                                  //       child: Text(
-                                  //         "STER",
-                                  //         style: TextStyle(
-                                  //           fontSize: 40,
-                                  //           fontWeight: FontWeight.bold,
-                                  //           color: Colors.white,
-                                  //         ),
-                                  //       ),
-                                  //     ),
-                                  //     alignment: Alignment.center,
-                                  //   ),
-                                  // ),
                                 ],
                               ),
                             ),
@@ -299,8 +237,6 @@ class _WelcomePage2State extends State<WelcomePage2> {
         UserUpdateInfo userUpdateInfo = new UserUpdateInfo();
         userUpdateInfo.displayName = _displayName;
         user.updateProfile(userUpdateInfo).then((onValue) {
-          // Navigator.pushReplacementNamed(context, "/login");
-          // Navigator.pushReplacementNamed(context, "/intro");
           widget.loginCallbackRegister();
           Navigator.push(
               context,
@@ -312,8 +248,6 @@ class _WelcomePage2State extends State<WelcomePage2> {
                       )));
           globals.isLoggedIn = true;
           checkHistoryStatus(_email);
-          // Navigator.push(
-          // context, MaterialPageRoute(builder: (context) => IntroS(auth: widget.auth)));
           Firestore.instance.collection('users').document(_email).setData(
               {'email': _email, 'displayName': _displayName}).then((onValue) {
             _sheetController.setState(() {
@@ -382,7 +316,6 @@ class _WelcomePage2State extends State<WelcomePage2> {
       color: fillColor,
       shape: RoundedRectangleBorder(
         borderRadius: new BorderRadius.circular(30.0),
-        //border
       ),
       child: Text(
         text,
@@ -420,7 +353,6 @@ class _WelcomePage2State extends State<WelcomePage2> {
   Widget _submitButton() {
     return InkWell(
       onTap: () {
-        // Navigator.pushReplacementNamed(context, "/login");
         Navigator.push(
             context,
             MaterialPageRoute(
@@ -483,41 +415,11 @@ class _WelcomePage2State extends State<WelcomePage2> {
       return null;
   }
 
-// Widget _verifyButton() {
-//     return InkWell(
-//       onTap: () {
-//         Navigator.push(
-//             context, MaterialPageRoute(builder: (context) => UserVerification()));
-//       },
-//       child: Container(
-//         width: MediaQuery.of(context).size.width,
-//         padding: EdgeInsets.symmetric(vertical: 13),
-//         alignment: Alignment.center,
-//         decoration: BoxDecoration(
-//           borderRadius: BorderRadius.all(Radius.circular(30)),
-//           border: Border.all(color: Colors.white, width: 2),
-//         ),
-//         child: Text(
-//           'Verify Kar Bhava',
-//           style: TextStyle(fontSize: 20, color: Colors.white),
-//         ),
-//       ),
-//     );
-//   }
-
   Widget _label() {
     return Container(
         margin: EdgeInsets.only(top: 40, bottom: 20),
         child: Column(
           children: <Widget>[
-            // Text(
-            //   'Quick login with Touch ID',
-            //   style: TextStyle(color: Colors.white, fontSize: 17),
-            // ),
-            // SizedBox(
-            //   height: 20,
-            // ),
-            // Icon(Icons.fingerprint, size: 90, color: Colors.white),
             SizedBox(
               height: 20,
             ),
@@ -576,7 +478,7 @@ class _WelcomePage2State extends State<WelcomePage2> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomPadding: false,
+      resizeToAvoidBottomInset: false,
       key: _scaffoldKey,
       body: SingleChildScrollView(
         child: Container(
@@ -618,7 +520,7 @@ class _WelcomePage2State extends State<WelcomePage2> {
         ),
       ),
     );
-  } //build
+  }
 
 }
 
